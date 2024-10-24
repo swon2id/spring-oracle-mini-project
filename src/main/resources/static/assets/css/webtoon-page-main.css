@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+main {
+  min-height: calc(100dvh - 240px);
+  padding: 0 150px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.notice-board--main-post {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.notice-board--main-post a {
+  margin-left: 16px;
+}
+
+.notice-board--main-post p {
+  margin: 0;
+}
+
+main > section:nth-child(2) {
+  margin-top: 40px;
+}
+
+.genre-checkbox-container > div {
+  display: flex;
+  gap: 50px;
+}
+
+.genre-checkbox-container > div > div {
+  display: flex;
+}
+
+.daily-view-navigation-bar {
+  margin-top: 20px;
+}
+
+.daily-view-navigation-bar > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+main > section:nth-child(3) {
+  margin-top: 40px;
+}
+
+.webtoon-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 800px;
+  gap: 50px;
+}
+
+.webtoon-content--naver,
+.webtoon-content--kakao,
+.webtoon-list {
+  width: 100%;
+  height: 100%;
+}
+
+.webtoon-content--naver,
+.webtoon-content--kakao {
+  overflow-y: auto;
+}
+
+.webtoon-list {
+  display: flex;
+}
+
+.webtoon-list--thumbnail {
+  height: 100%;
+  width: 70%;
+  background-color: blue;
+}
+
+.webtoon-list--recommend {
+  height: 100%;
+  width: 30%;
+  background-color: aqua;
+}

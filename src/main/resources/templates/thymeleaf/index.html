@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KH TOON</title>
+    <link rel="stylesheet" href="/assets/css/webtoon-page-main.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+</head>
+
+<body>
+    <header>
+        <a href="/" class="logo">
+            <img class="logo__image" src="/assets/img/logo.png" alt="로고">
+            <span class="logo__text">KH TOON</span>
+        </a>
+        <div class="search-box">
+            <form onsubmit="return false">
+                <input type="text" name="term" placeholder="검색어를 입력하세요.">
+                <button>검색</button>
+            </form>
+        </div>
+        <div>
+            <button id="register-button" onClick="location.href='/register/page.html';">회원가입</button>
+            <button id="login-button" onClick="location.href='/login/page.html';">로그인</button>
+            <button id="member-page-button" onClick="location.href='/mypage/page.html';">마이페이지</button>
+            <button id="goto-board-button" onClick="location.href='/board/general';">게시판</button>
+        </div>
+    </header>
+    <main>
+        <div class="notice-board--main-post">
+            <span>[ 메인 공지 ]</span>
+            <a href="#">
+                <p>환영합니다.</p>
+            </a>
+        </div>
+        <section>
+            <div class="genre-checkbox-container">
+                <span>장르</span>
+                <div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <span>공포</span>
+                        <input type="checkbox">
+                    </div>
+                </div>
+            </div>
+            <div class="daily-view-navigation-bar">
+                <span>요일</span>
+                <div>
+                    <button>월</button>
+                    <button>화</button>
+                    <button>수</button>
+                    <button>목</button>
+                    <button>금</button>
+                    <button>토</button>
+                    <button>일</button>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="webtoon-content">
+                <div class="webtoon-content--naver">
+                    <span>네이버 웹툰</span>
+                    <div class="webtoon-list">
+                        <div class="webtoon-list--thumbnail">
+                            <ul>
+                                <!-- 웹툰 목록들 -->
+                            </ul>
+                        </div>
+                        <div class="webtoon-list--recommend">
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="webtoon-content--kakao">
+                    <span>카카오 웹툰</span>
+                    <div class="webtoon-list">
+                        <div class="webtoon-list--thumbnail">
+                            <ul>
+                                <!-- 웹툰 목록들 -->
+                            </ul>
+                        </div>
+                        <div class="webtoon-list--recommend">
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="/assets/js/webtoon_search_handler.js"></script>
+</body>
+
+</html>

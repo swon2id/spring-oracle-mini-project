@@ -1,0 +1,48 @@
+header {
+  padding: 0 150px;
+  display: flex;
+  align-items: center;
+  height: 80px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  background-color: rgb(219, 219, 219);
+}
+
+.logo {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  margin-right: auto;
+}
+
+.logo__image {
+  height: 100%;
+  width: auto;
+
+  margin-right: 15px;
+}
+
+.search-box {
+  margin-right: 20px;
+}
+
+.search-box form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.search-box input {
+  width: 200px;
+  height: 100%;
+  flex: 1;
+
+  padding-right: 60px;
+}
+
+.search-box button {
+  position: absolute;
+  right: 4px;
+  width: 50px;
+}

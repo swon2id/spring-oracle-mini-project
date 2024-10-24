@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+main {
+  padding: 0 150px;
+  min-height: calc(100dvh - 240px);
+  padding-bottom: 60px;
+}
+
+.search-result-msg {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.search-result-item {
+  display: flex;
+  flex-direction: column;
+
+  width: 70%;
+  padding-top: 20px;
+  margin-right: 80px;
+}
+
+.webtoon-recommend-list {
+  flex: 1;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.webtoon-recommend-list > div {
+  border: 1px solid black;
+  height: 45%;
+}
+
+.search-result-item > div {
+  flex: 1;
+  margin-top: 18px;
+}
+
+.search-result-item > span {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 12px;
+}
+
+.search-result-item ul {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-left: 0;
+}
+
+.search-result-item li {
+  padding: 20px 0;
+  border: 1px solid black;
+
+  display: flex;
+}
+
+.search-result-item img {
+  width: 150px;
+  height: auto;
+  margin-right: 36px;
+}
+
+.search-result-item__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-result-item__info--detail {
+  display: flex;
+  margin-top: 32px;
+  padding-bottom: 32px;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+main > section:nth-child(2) {
+  display: flex;
+}
