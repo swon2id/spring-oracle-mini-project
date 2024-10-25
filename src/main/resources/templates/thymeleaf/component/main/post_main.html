@@ -1,0 +1,39 @@
+<main th:fragment="post">
+  <span th:text="${boardName}"></span>
+  <button style="display: none;">수정</button>
+  <button style="display: none;">삭제</button>
+  <button onclick="history.back()">뒤로</button>
+  <div>
+    <div class="post-info">
+      <span th:text="'제목 : ' + ${postTitle}"></span>
+      <div>
+        <span th:text="'작성자 : ' + ${postAuthorName}"></span>
+        <span th:text="'작성일 : ' + ${postPublishedDate}"></span>
+        <span th:text="'조회수 : ' + ${postVisit}"></span>
+      </div>
+    </div>
+    <div class="post-content">
+      <p th:text="${postContent}"></p>
+    </div>
+    <div class="post-reply">
+      <span>댓글 목록</span>
+      <div>
+        <ol>
+          <li th:each="reply: ${replys}">
+            <div>
+              <span th:text="'작성자 : ' + ${reply.replyAuthorName}"></span>
+              <span th:text="'작성일 : ' + ${reply.replyPublishedDate}"></span>
+            </div>
+            <p th:text="${reply.replyContent}"></p>
+            <div>
+              <span th:text="'공감 : ' + ${reply.replyLikeCount}"></span>
+              <button onclick="alert('좋아요!');">👍</button>
+              <span th:text="'비공감 : ' + ${reply.replyDislikeCount}"></span>
+              <button onclick="alert('싫어요!');">👎</button>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,24 @@
+<header th:fragment="header">
+    <a class="logo"
+       th:data-url="${serviceMainPagePath}"
+       onclick="location.href=this.getAttribute('data-url'); return false;">
+        <img class="logo__image" src="/assets/img/logo.png" alt="로고">
+        <span class="logo__text">KH TOON</span>
+    </a>
+    <div class="search-box">
+        <form onsubmit="return false">
+            <input type="text" name="term" placeholder="검색어를 입력하세요.">
+            <button>검색</button>
+        </form>
+    </div>
+    <div>
+        <button id="register-button" onClick="location.href='/register/page.html';">회원가입</button>
+        <button id="login-button" onClick="location.href='/login/page.html';">로그인</button>
+        <button id="member-page-button" onClick="location.href='/mypage/page.html';">마이페이지</button>
+        <button id="goto-board-button"
+                th:data-url="${toggleServicePagePath}"
+                th:text="${toggleServiceName}"
+                onclick="location.href=this.getAttribute('data-url');">
+        </button>
+    </div>
+</header>

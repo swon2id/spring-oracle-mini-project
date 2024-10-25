@@ -56,3 +56,33 @@ main > div {
   border: 1px solid black;
   min-height: calc(100dvh - 180px - 254px);
 }
+
+.post-reply {
+  margin-top: 40px;
+}
+
+.post-reply > span {
+  font-weight: bold;
+}
+
+ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+li > div:first-child {
+  display: flex;
+  justify-content: space-between;
+}
+
+li p {
+  margin: 10px 0;
+  box-shadow: 0 0 3px grey;
+  min-height: 100px;
+  padding: 10px;
+}

@@ -1,44 +1,112 @@
 package com.kh.jdbc_oracle_spring.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kh.jdbc_oracle_spring.common.Paths;
+import com.kh.jdbc_oracle_spring.common.PostUtility;
+import com.kh.jdbc_oracle_spring.common.ReplyUtility;
+import com.kh.jdbc_oracle_spring.vo.PostVo;
+import com.kh.jdbc_oracle_spring.vo.ReplyVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-    /**
-     * 일반 게시판 페이지를 보여줍니다.
-     * URL: /board/general
-     */
+    @GetMapping("notice")
+    public String enterNoticeBoard(Model model) {
+        // dao 결과 리턴 값 받기
+        // 20개 단위로 1페이지 분량만 시연할 것
+        List<PostVo> posts = new ArrayList<>();
+        posts.add(new PostVo(1, "제목1", "내용내용", Date.valueOf("2024-10-25"), 1, 0));
+        posts.add(new PostVo(2, "제목2", "내용내용", Date.valueOf("2024-10-25"), 2, 0));
+        posts.add(new PostVo(3, "제목3", "내용내용", Date.valueOf("2024-10-25"), 3, 0));
+        posts.add(new PostVo(4, "제목4", "내용내용", Date.valueOf("2024-10-25"), 4, 0));
+        posts.add(new PostVo(5, "제목5", "내용내용", Date.valueOf("2024-10-25"), 5, 0));
+        posts.add(new PostVo(6, "제목6", "내용내용", Date.valueOf("2024-10-25"), 6, 0));
+        posts.add(new PostVo(7, "제목7", "내용내용", Date.valueOf("2024-10-25"), 7, 0));
+
+        model.addAttribute("boardName", "공지게시판");
+        model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
+        addHeaderAttribute(model);
+        return "thymeleaf/board";
+    }
+
+    @GetMapping("notice/post/{postId}")
+    public String readNoticePost(@PathVariable("postId") String postId, Model model) {
+        // dao 결과 리턴 값 받기
+        List<PostVo> posts = new ArrayList<>();
+        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 0));
+        PostVo post = PostUtility.setPostsWithMemberNameAndUrl(posts).get(0);
+
+        List<ReplyVo> replys = new ArrayList<>();
+        replys.add(new ReplyVo(1, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 1, 1));
+        replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
+        replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
+
+        model.addAttribute("boardName", "공지게시판");
+        model.addAttribute("postTitle", post.getPostTitle());
+        model.addAttribute("postAuthorName", post.getPostAuthorName());
+        model.addAttribute("postContent", post.getPostContent());
+        model.addAttribute("postPublishedDate", post.getPostPublishedDate());
+        model.addAttribute("postVisit", post.getPostVisit());
+        model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
+        addHeaderAttribute(model);
+        return "thymeleaf/post";
+    }
+
     @GetMapping("general")
     public String enterGeneralBoard(Model model) {
-        // 게시판 목록 데이터를 조회하여 모델에 추가
-        return "thymeleaf/general_board";
+        // dao 결과 리턴 값 받기
+        // 20개 단위로 1페이지 분량만 시연할 것
+        List<PostVo> posts = new ArrayList<>();
+        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 1));
+
+
+        model.addAttribute("boardName", "자유게시판");
+        model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
+        addHeaderAttribute(model);
+        return "thymeleaf/board";
     }
 
-    /**
-     * 특정 게시글을 조회합니다.
-     * URL: /board/general/posts/{postId}
-     */
     @GetMapping("general/post/{postId}")
     public String readGeneralPost(@PathVariable("postId") String postId, Model model) {
-        System.out.println("게시글 번호 : " + postId);
-        // 게시글 목록 데이터를 조회하여 모델에 추가
-        return "thymeleaf/general_post";
+        // dao 결과 리턴 값 받기
+        List<PostVo> posts = new ArrayList<>();
+        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 1));
+        PostVo post = PostUtility.setPostsWithMemberNameAndUrl(posts).get(0);
+
+        List<ReplyVo> replys = new ArrayList<>();
+        replys.add(new ReplyVo(1, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 1, 1));
+        replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
+        replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
+
+        model.addAttribute("boardName", "자유게시판");
+        model.addAttribute("postTitle", post.getPostTitle());
+        model.addAttribute("postAuthorName", post.getPostAuthorName());
+        model.addAttribute("postContent", post.getPostContent());
+        model.addAttribute("postPublishedDate", post.getPostPublishedDate());
+        model.addAttribute("postVisit", post.getPostVisit());
+        model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
+        addHeaderAttribute(model);
+        return "thymeleaf/post";
     }
 
-    /**
-     * 게시판 검색 기능을 수행합니다.
-     * URL: /board/search?term=검색어
-     */
     @GetMapping("search")
     public String searchBoard(@RequestParam(name = "term", required = true) String term, Model model) {
         System.out.println("검색어 : " + term);
         model.addAttribute("term", term);
-
-        // 추가적으로 모델에 검색어를 기반으로 연관된 게시글 데이터를 가져와 추가
+        addHeaderAttribute(model);
         return "thymeleaf/search/board_search";
+    }
+
+    private void addHeaderAttribute(Model model) {
+        model.addAttribute("toggleServiceName", "웹툰");
+        model.addAttribute("toggleServicePagePath", Paths.WEBTOON_PAGE);
+        model.addAttribute("serviceMainPagePath", Paths.GENERAL_BOARD_PAGE);
+        model.addAttribute("noticeBoardPagePath", Paths.NOTICE_BOARD_PAGE);
     }
 }

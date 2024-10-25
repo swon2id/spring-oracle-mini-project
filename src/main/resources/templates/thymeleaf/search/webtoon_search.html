@@ -11,88 +11,10 @@
 </head>
 
 <body>
-    <header>
-        <a href="/" class="logo">
-            <img class="logo__image" src="/assets/img/logo.png" alt="로고">
-            <span class="logo__text">KH TOON</span>
-        </a>
-        <div class="search-box">
-            <form onsubmit="return false">
-                <input type="text" name="term" placeholder="검색어를 입력하세요.">
-                <button>검색</button>
-            </form>
-        </div>
-        <div>
-            <button id="register-button" onClick="location.href='/register/page.html';">회원가입</button>
-            <button id="login-button" onClick="location.href='/login/page.html';">로그인</button>
-            <button id="member-page-button" onClick="location.href='/mypage/page.html';">마이페이지</button>
-            <button id="goto-board-button" onClick="location.href='/board/general';">게시판</button>
-        </div>
-    </header>
-    <main>
-        <div class="search-result-msg">
-            <p>"<span th:text="${term}"></span>"에 대한 검색결과: 5건</p>
-        </div>
-        <section>
-            <div class="search-result-item">
-                <span>검색 결과</span>
-                <div>
-                    <ul>
-                        <li>
-                            <a target="_blank" href="https://comic.naver.com/webtoon/list?titleId=783053&tab=tue">
-                                <img src="/assets/img/thumbnail_example.jpg" alt="웹툰 썸네일">
-                            </a>
-                            <div class="search-result-item__info">
-                                <span><strong>네이버 웹툰</strong></span>
-                                <div class="search-result-item__info--detail">
-                                    <span>제목: 김부장</span>
-                                    <span>작가: 이부장</span>
-                                    <span>장르: 코미디</span>
-                                    <span>평점: 9.7</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <a target="_blank" href="https://comic.naver.com/webtoon/list?titleId=783053&tab=tue">
-                                <img src="/assets/img/thumbnail_example.jpg" alt="웹툰 썸네일">
-                            </a>
-                            <div class="search-result-item__info">
-                                <span><strong>네이버 웹툰</strong></span>
-                                <div class="search-result-item__info--detail">
-                                    <span>제목: 김부장</span>
-                                    <span>작가: 이부장</span>
-                                    <span>장르: 코미디</span>
-                                    <span>평점: 9.7</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="webtoon-recommend-list">
-                <div class="webtoon-recommend-list--naver">
-                    <span>검색 결과와 관련이 있는 네이버 웹툰 추천</span>
-                    <div>
-                        <ul>
-                            <li>웹툰</li>
-                            <li>웹툰</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="webtoon-recommend-list--kakao">
-                    <span>검색 결과와 관련이 있는 카카오 웹툰 추천</span>
-                    <div>
-                        <ul>
-                            <li>웹툰</li>
-                            <li>웹툰</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer></footer>
-    <script src="/assets/js/webtoon_search_handler.js"></script>
+    <div th:replace="~{thymeleaf/component/header :: header}"></div>
+    <div th:replace="~{thymeleaf/component/main/webtoon_search_main :: webtoonSearch}"></div>
+    <div th:replace="~{thymeleaf/component/footer :: footer}"></div>
+    <script src="/assets/js/webtoon_searchbox_handler.js"></script>
 </body>
 
 </html>

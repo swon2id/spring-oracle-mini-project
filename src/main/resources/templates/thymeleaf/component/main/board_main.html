@@ -1,0 +1,68 @@
+<main th:fragment="board">
+  <div>
+    <span th:text="${boardName}"></span>
+    <div class="notice-board--main-post-list">
+      <ol>
+        <li>
+          <span>[ 메인 공지 ]</span>
+          <a href="/board/notice/post/1">
+            <p>(필독) 사이트 운영 방침 안내</p>
+          </a>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <section>
+    <div class="board-sidebar">
+      <span>메뉴</span>
+      <ol>
+        <li>
+          <a href="/board/notice">공지게시판</a>
+        </li>
+        <li>
+          <a href="/board/general">자유게시판</a>
+        </li>
+      </ol>
+    </div>
+    <div class="board-content">
+      <div class="post-list">
+        <table>
+          <colgroup>
+            <col style="width: 15%;">
+            <col style="width: 50%">
+            <col style="width: 17.5%">
+            <col style="width: 10%">
+            <col style="width: 7.5%">
+          </colgroup>
+          <thead>
+          <tr>
+            <th>번호</th>
+            <th style="text-align: left;">제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>조회수</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr th:each="post : ${posts}" style="box-shadow: 0 0 2px rgba(0,0,0,0.2);">
+              <td th:text="${post.postNum}"></td>
+              <td style="text-align: left;">
+                <a th:data-url="${post.postUrl}"
+                   onclick="location.href=this.getAttribute('data-url'); return false;"
+                   th:text="${post.postTitle}"></a>
+              </td>
+              <td th:text="${post.postAuthorName}"></td>
+              <td th:text="${post.postPublishedDate}"></td>
+              <td th:text="${post.postVisit}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="page-navigator">
+        <button>◀</button>
+        <span>1 / 1</span>
+        <button>▶</button>
+      </div>
+    </div>
+  </section>
+</main>

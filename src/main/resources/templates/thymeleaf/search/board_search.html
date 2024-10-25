@@ -11,50 +11,10 @@
 </head>
 
 <body>
-    <header>
-        <a href="/board/general" class="logo">
-            <img class="logo__image" src="/assets/img/logo.png" alt="로고">
-            <span class="logo__text">KH TOON 커뮤니티</span>
-        </a>
-        <div class="search-box">
-            <form onsubmit="return false">
-                <input type="text" name="term" placeholder="검색어를 입력하세요.">
-                <button>검색</button>
-            </form>
-        </div>
-        <div>
-            <button id="register-button" onClick="location.href='/register/page.html';">회원가입</button>
-            <button id="login-button" onClick="location.href='/login/page.html';">로그인</button>
-            <button id="member-page-button" onClick="location.href='/mypage/page.html';">마이페이지</button>
-            <button id="goto-board-button" onClick="location.href='/'">웹툰</button>
-        </div>
-    </header>
-    <main>
-        <div class="search-result-msg">
-            <p>"<span th:text="${term}"></span>"에 대한 검색결과: 5건</p>
-        </div>
-        <section>
-            <div class="search-result-item">
-                <span>검색 결과</span>
-                <div>
-                    <ul>
-
-                    </ul>
-                </div>
-            </div>
-            <div class="board-recommend-list">
-                <span>인기 게시글</span>
-                <div>
-                    <ul>
-                        <li>게시글</li>
-                        <li>게시글</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer></footer>
-    <script src="/assets/js/board_search_handler.js"></script>
+    <div th:replace="~{thymeleaf/component/header :: header}"></div>
+    <div th:replace="~{thymeleaf/component/main/board_search_main :: boardSearch}"></div>
+    <div th:replace="~{thymeleaf/component/footer :: footer}"></div>
+    <script src="/assets/js/board_searchbox_handler.js"></script>
 </body>
 
 </html>
