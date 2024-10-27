@@ -14,11 +14,11 @@ public class TimeUtility {
     public final static String SAT = "sat";
     public final static String SUN = "sun";
 
-    public static int getDayOfWeek() {
-        return convertDayOfWeekToInt(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+    public static String getDayOfWeek() {
+        return ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
                 .getDayOfWeek()
                 .getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                .substring(0, 3).toLowerCase());
+                .substring(0, 3).toLowerCase();
     }
 
     public static int convertDayOfWeekToInt(String dayOfWeek) {

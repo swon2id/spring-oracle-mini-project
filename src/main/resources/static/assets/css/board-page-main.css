@@ -9,12 +9,10 @@ html {
 }
 
 main {
-  min-height: calc(100dvh - 180px);
-  padding: 0 150px;
-  padding-bottom: 60px;
+  min-height: calc(100dvh - 260px);
+  padding: 60px 150px;
   display: flex;
   flex-direction: column;
-  width: 100%;
   box-sizing: border-box;
 }
 
@@ -33,7 +31,7 @@ main > div > span {
 main > section {
   display: flex;
   width: 100%;
-  min-height: calc(100dvh - 180px);
+  min-height: calc(100dvh - 460px);
 }
 
 .board-sidebar {

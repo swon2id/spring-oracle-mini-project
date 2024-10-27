@@ -8,19 +8,17 @@ html {
 }
 
 main {
-  min-height: calc(100dvh - 180px);
-  padding: 0 150px;
-  padding-bottom: 60px;
-  padding-top: 60px;
+  min-height: calc(100dvh - 260px);
+  padding: 60px 150px;
   display: flex;
   flex-direction: column;
-  width: 100%;
   box-sizing: border-box;
 
   position: relative;
 }
 
 main > span {
+  margin-top: 40px;
   font-size: 24px;
   font-weight: bold;
 }
@@ -40,6 +38,7 @@ main > div {
   margin-top: 40px;
   display: flex;
   justify-content: space-between;
+
 }
 
 .post-info > div {
@@ -53,7 +52,7 @@ main > div {
   flex: 1;
   margin-top: 20px;
   padding: 20px;
-  border: 1px solid black;
+  box-shadow: 0 0 3px grey;
   min-height: calc(100dvh - 180px - 254px);
 }
 

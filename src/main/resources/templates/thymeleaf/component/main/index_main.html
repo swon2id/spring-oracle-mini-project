@@ -1,83 +1,111 @@
 <main th:fragment="index">
-  <div class="notice-board--main-post">
-    <span>[ 메인 공지 ]</span>
-    <a href="#">
-      <p>환영합니다.</p>
-    </a>
-  </div>
   <section>
     <div class="genre-checkbox-container">
-      <span>장르</span>
-      <div>
+      <span>장르별 조회</span>
+      <form action="/" method="GET">
+        <input type="hidden" name="tab" th:value="${currentTab}">
         <div>
-          <span>공포</span>
-          <input type="checkbox">
+          <label th:each="genre : ${genres}">
+            <span th:text="${genre.genreName}"></span>
+            <input type="checkbox" name="genre" th:value="${genre.genreName}"
+                   th:checked="${selectedGenres.contains(genre.genreName)}"
+                   onchange="this.form.submit()">
+          </label>
         </div>
-        <div>
-          <span>공포</span>
-          <input type="checkbox">
-        </div>
-        <div>
-          <span>공포</span>
-          <input type="checkbox">
-        </div>
-        <div>
-          <span>공포</span>
-          <input type="checkbox">
-        </div>
-        <div>
-          <span>공포</span>
-          <input type="checkbox">
-        </div>
-        <div>
-          <span>공포</span>
-          <input type="checkbox">
-        </div>
-      </div>
+      </form>
     </div>
+
     <div class="daily-view-navigation-bar">
-      <span>요일</span>
-      <div>
-        <button>월</button>
-        <button>화</button>
-        <button>수</button>
-        <button>목</button>
-        <button>금</button>
-        <button>토</button>
-        <button>일</button>
-      </div>
+      <span>웹툰 연재일</span>
+      <form action="/" method="GET">
+        <div>
+          <button type="submit" name="tab" value="mon"
+                  th:classappend="${currentTab == 'mon'} ? 'selected' : ''">월요일</button>
+          <button type="submit" name="tab" value="tue"
+                  th:classappend="${currentTab == 'tue'} ? 'selected' : ''">화요일</button>
+          <button type="submit" name="tab" value="wed"
+                  th:classappend="${currentTab == 'wed'} ? 'selected' : ''">수요일</button>
+          <button type="submit" name="tab" value="thu"
+                  th:classappend="${currentTab == 'thu'} ? 'selected' : ''">목요일</button>
+          <button type="submit" name="tab" value="fri"
+                  th:classappend="${currentTab == 'fri'} ? 'selected' : ''">금요일</button>
+          <button type="submit" name="tab" value="sat"
+                  th:classappend="${currentTab == 'sat'} ? 'selected' : ''">토요일</button>
+          <button type="submit" name="tab" value="sun"
+                  th:classappend="${currentTab == 'sun'} ? 'selected' : ''">일요일</button>
+          <div th:if="${selectedGenres}">
+            <input type="hidden" th:each="genre : ${selectedGenres}" name="genre" th:value="${genre}">
+          </div>
+        </div>
+      </form>
     </div>
   </section>
   <section>
     <div class="webtoon-content">
       <div class="webtoon-content--naver">
-        <span>네이버 웹툰</span>
         <div class="webtoon-list">
           <div class="webtoon-list--thumbnail">
-            <ul>
-              <!-- 웹툰 목록들 -->
-            </ul>
-          </div>
-          <div class="webtoon-list--recommend">
-            <ul>
-
-            </ul>
+            <span>네이버 웹툰</span>
+            <ol>
+              <li th:each="webtoon : ${naverWebtoons}">
+                <a th:href="'http://' + ${webtoon.webtoonPageUrl}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <img th:src="'http://' + ${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
+                </a>
+                <span th:text="${webtoon.webtoonTitle}"></span>
+                <span th:text="${webtoon.webtoonAuthor}"></span>
+                <span th:text="'⭐ ' + ${webtoon.webtoonRating}"></span>
+              </li>
+            </ol>
           </div>
         </div>
       </div>
       <div class="webtoon-content--kakao">
-        <span>카카오 웹툰</span>
         <div class="webtoon-list">
           <div class="webtoon-list--thumbnail">
-            <ul>
-              <!-- 웹툰 목록들 -->
-            </ul>
+            <span>카카오 웹툰</span>
+            <ol>
+              <li th:each="webtoon : ${kakaoWebtoons}">
+                <a th:href="'http://' + ${webtoon.webtoonPageUrl}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <img th:src="'http://' + ${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
+                </a>
+                <span th:text="${webtoon.webtoonTitle}"></span>
+                <span th:text="${webtoon.webtoonAuthor}"></span>
+                <span th:text="'⭐ ' + ${webtoon.webtoonRating}"></span>
+              </li>
+            </ol>
           </div>
-          <div class="webtoon-list--recommend">
-            <ul>
-
-            </ul>
-          </div>
+        </div>
+      </div>
+      <div class="webtoon-recommend-list">
+        <div class="webtoon-recommend-list--naver">
+          <span>추천 네이버 웹툰 TOP 10</span>
+          <ol>
+            <li th:each="list : ${naverRecommendList}">
+              <a th:href="'http://' + ${list.webtoonPageUrl}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <span th:text="${list.webtoonTitle}"></span>
+                <span th:text="${list.webtoonAuthor}"></span>
+              </a>
+            </li>
+          </ol>
+        </div>
+        <div class="webtoon-recommend-list--kakao">
+          <span>추천 카카오 웹툰 TOP 10</span>
+          <ol>
+            <li th:each="list : ${kakaoRecommendList}">
+              <a th:href="'http://' + ${list.webtoonPageUrl}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <span th:text="${list.webtoonTitle}"></span>
+                <span th:text="${list.webtoonAuthor}"></span>
+              </a>
+            </li>
+          </ol>
         </div>
       </div>
     </div>

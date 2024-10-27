@@ -8,62 +8,79 @@ html {
 }
 
 main {
-  min-height: calc(100dvh - 240px);
-  padding: 0 150px;
-  padding-bottom: 60px;
+  min-height: calc(100dvh - 260px);
+  padding: 60px 150px;
   display: flex;
   flex-direction: column;
-  width: 100%;
   box-sizing: border-box;
 }
 
-.notice-board--main-post {
-  margin-top: 30px;
+.genre-checkbox-container > span,
+.daily-view-navigation-bar > span {
+  font-weight: bold;
+}
+
+.genre-checkbox-container > form,
+.daily-view-navigation-bar > form {
+  margin-top: 15px;
+  height: 32px;
+}
+
+.genre-checkbox-container > form > div,
+.daily-view-navigation-bar > form > div {
   display: flex;
+  gap: 16px;
+}
+
+.genre-checkbox-container form > div > label {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
   align-items: center;
-}
-
-.notice-board--main-post a {
-  margin-left: 16px;
-}
-
-.notice-board--main-post p {
-  margin: 0;
-}
-
-main > section:nth-child(2) {
-  margin-top: 40px;
-}
-
-.genre-checkbox-container > div {
-  display: flex;
-  gap: 50px;
-}
-
-.genre-checkbox-container > div > div {
-  display: flex;
+  width: 120px;
+  border: 1px solid black;
+  font-size: 14px;
 }
 
 .daily-view-navigation-bar {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .daily-view-navigation-bar > div {
   width: 100%;
   display: flex;
-  justify-content: space-between;
 }
 
-main > section:nth-child(3) {
+.daily-view-navigation-bar button {
+  width: 100px;
+  background-color: white;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.7);
+
+  text-decoration: none;
+  color: black;
+
+  font-size: 14px;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: grey !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+main > section:nth-child(2) {
   margin-top: 40px;
+  flex: 1;
+  display: flex;
 }
 
 .webtoon-content {
   display: flex;
-  justify-content: center;
   width: 100%;
-  height: 800px;
-  gap: 50px;
 }
 
 .webtoon-content--naver,
@@ -73,23 +90,112 @@ main > section:nth-child(3) {
   height: 100%;
 }
 
-.webtoon-content--naver,
 .webtoon-content--kakao {
-  overflow-y: auto;
+  margin-left: 60px;
 }
 
 .webtoon-list {
+  margin-top: 15px;
   display: flex;
 }
 
 .webtoon-list--thumbnail {
   height: 100%;
-  width: 70%;
-  background-color: blue;
 }
 
-.webtoon-list--recommend {
-  height: 100%;
-  width: 30%;
-  background-color: aqua;
+.webtoon-list--thumbnail > span {
+  font-weight: bold;
+}
+
+ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+.webtoon-list--thumbnail ol {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: 7px;
+  box-sizing: border-box;
+  padding: 20px 20px 0 0 ;
+}
+
+.webtoon-list--thumbnail li {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 20px 20px;
+}
+
+.webtoon-list--thumbnail img {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 7px;
+}
+
+.webtoon-list--thumbnail span:nth-child(2) {
+  font-weight: bold;
+  font-size: 14px;
+  padding-left: 4px;
+}
+
+.webtoon-list--thumbnail span:nth-child(3) {
+  font-size: 14px;
+  padding-top: 2px;
+  padding-left: 4px;
+}
+
+.webtoon-list--thumbnail span:nth-child(4) {
+  font-size: 12px;
+  padding-top: 4px;
+  padding-left: 1.5px;
+}
+
+.webtoon-recommend-list {
+  margin-top: 15px;
+  margin-left: 60px;
+  width: 20%;
+  min-width: 260px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.webtoon-recommend-list--naver,
+.webtoon-recommend-list--kakao {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+}
+
+.webtoon-recommend-list > div > span {
+  font-weight: bold;
+}
+
+.webtoon-recommend-list > div ol {
+  margin-top: 15px;
+  flex: 1;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: 7px;
+  box-sizing: border-box;
+  padding: 15px;
+  font-size: 14px;
+}
+
+.webtoon-recommend-list li {
+  width: 100%;
+  padding: 4px 0 4px 0;
+  margin: 4px 0 4px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.webtoon-recommend-list li:first-child {
+  border-top: none;
+}
+
+.webtoon-recommend-list li a {
+  text-decoration: none;
+  color: black;
 }

@@ -8,9 +8,11 @@ html {
 }
 
 main {
-  padding: 0 150px;
-  min-height: calc(100dvh - 240px);
-  padding-bottom: 60px;
+    min-height: calc(100dvh - 260px);
+    padding: 60px 150px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 .search-result-msg {

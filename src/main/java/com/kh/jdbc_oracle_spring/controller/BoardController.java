@@ -1,6 +1,6 @@
 package com.kh.jdbc_oracle_spring.controller;
 
-import com.kh.jdbc_oracle_spring.common.Paths;
+import com.kh.jdbc_oracle_spring.common.Path;
 import com.kh.jdbc_oracle_spring.common.PostUtility;
 import com.kh.jdbc_oracle_spring.common.ReplyUtility;
 import com.kh.jdbc_oracle_spring.vo.PostVo;
@@ -47,7 +47,7 @@ public class BoardController {
         replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
         replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
 
-        model.addAttribute("boardName", "공지게시판");
+        model.addAttribute("boardName", "게시판 > 공지게시판");
         model.addAttribute("postTitle", post.getPostTitle());
         model.addAttribute("postAuthorName", post.getPostAuthorName());
         model.addAttribute("postContent", post.getPostContent());
@@ -84,7 +84,7 @@ public class BoardController {
         replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
         replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
 
-        model.addAttribute("boardName", "자유게시판");
+        model.addAttribute("boardName", "게시판 > 자유게시판");
         model.addAttribute("postTitle", post.getPostTitle());
         model.addAttribute("postAuthorName", post.getPostAuthorName());
         model.addAttribute("postContent", post.getPostContent());
@@ -104,9 +104,10 @@ public class BoardController {
     }
 
     private void addHeaderAttribute(Model model) {
+        model.addAttribute("logoText", "KH TOON 커뮤니티");
         model.addAttribute("toggleServiceName", "웹툰");
-        model.addAttribute("toggleServicePagePath", Paths.WEBTOON_PAGE);
-        model.addAttribute("serviceMainPagePath", Paths.GENERAL_BOARD_PAGE);
-        model.addAttribute("noticeBoardPagePath", Paths.NOTICE_BOARD_PAGE);
+        model.addAttribute("toggleServicePagePath", Path.WEBTOON_PAGE);
+        model.addAttribute("serviceMainPagePath", Path.GENERAL_BOARD_PAGE);
+        model.addAttribute("noticeBoardPagePath", Path.NOTICE_BOARD_PAGE);
     }
 }

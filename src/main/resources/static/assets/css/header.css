@@ -2,7 +2,7 @@ header {
   padding: 0 150px;
   display: flex;
   align-items: center;
-  height: 80px;
+  height: 100px;
   box-sizing: border-box;
   border-bottom: 1px solid black;
   background-color: rgb(219, 219, 219);

@@ -9,7 +9,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString // ?
 public class PostVo {
-    // 테이블 구조
     private int postNum;
     private String postTitle;
     private String postContent;
@@ -27,7 +26,7 @@ public class PostVo {
         this.boardNum = boardNum;
     }
 
-    // 조인을 통해 자주 사용하는 값
+    // 임시 조인 컬럼
     private String postAuthorName = null;
     private String postUrl = null;
 }

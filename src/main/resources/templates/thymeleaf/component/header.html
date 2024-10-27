@@ -3,7 +3,7 @@
        th:data-url="${serviceMainPagePath}"
        onclick="location.href=this.getAttribute('data-url'); return false;">
         <img class="logo__image" src="/assets/img/logo.png" alt="로고">
-        <span class="logo__text">KH TOON</span>
+        <span class="logo__text" th:text="${logoText}"></span>
     </a>
     <div class="search-box">
         <form onsubmit="return false">

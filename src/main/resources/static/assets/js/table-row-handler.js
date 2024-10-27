@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   for (let i = 0; i < rowsToAdd; i++) {
     const emptyRow = document.createElement('tr');
     emptyRow.innerHTML = `
-            <td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
         `;
     tbody.appendChild(emptyRow);
   }

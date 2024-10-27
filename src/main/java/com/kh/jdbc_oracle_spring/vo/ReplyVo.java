@@ -9,7 +9,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString // ?
 public class ReplyVo {
-    // 테이블 구조
     private int replyNum;
     private String replyContent;
     private Date replyPublishedDate;
@@ -28,6 +27,6 @@ public class ReplyVo {
         this.postNum = postNum;
     }
 
-    // 조인되는 속성
+    // 임시 조인 컬럼
     private String replyAuthorName = null;
 }
