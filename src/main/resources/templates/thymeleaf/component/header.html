@@ -12,13 +12,15 @@
         </form>
     </div>
     <div>
-        <button id="register-button" onClick="location.href='/register/page.html';">회원가입</button>
-        <button id="login-button" onClick="location.href='/login/page.html';">로그인</button>
-        <button id="member-page-button" onClick="location.href='/mypage/page.html';">마이페이지</button>
+        <button id="register-button" th:if="${currMemberNickname == null}" onclick="location.href='/register/page.html';">회원가입</button>
+        <button id="login-button" th:if="${currMemberNickname == null}" onclick="location.href='/member/login';">로그인</button>
+        <span th:if="${currMemberNickname != null}" th:text="'환영합니다 ' + ${currMemberNickname} + '님'"></span>
+        <button id="member-page-button" th:if="${currMemberNickname != null}" onclick="location.href='/mypage/page.html';">마이페이지</button>
         <button id="goto-board-button"
                 th:data-url="${toggleServicePagePath}"
                 th:text="${toggleServiceName}"
                 onclick="location.href=this.getAttribute('data-url');">
         </button>
+        <button th:if="${currMemberNickname != null}" onclick="location.href='/member/logout';">로그아웃</button>
     </div>
 </header>

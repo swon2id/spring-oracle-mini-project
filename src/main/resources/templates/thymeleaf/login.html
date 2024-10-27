@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KH TOON 로그인</title>
+</head>
+
+<body>
+  <form action="/member/login/Authentication" method="POST">
+    <label>ID</label>
+    <input type="text" name="id" required/>
+    <label>Password</label>
+    <input type="text" name="password" required/>
+    <button>회원가입</button>
+    <button type="submit">로그인</button>
+  </form>
+  <button onclick="history.back()">뒤로</button>
+</body>
+
+</html>

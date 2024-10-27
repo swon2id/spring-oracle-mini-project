@@ -1,11 +1,14 @@
 package com.kh.jdbc_oracle_spring.controller;
 
+import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
 import com.kh.jdbc_oracle_spring.common.Path;
 import com.kh.jdbc_oracle_spring.common.TimeUtility;
 import com.kh.jdbc_oracle_spring.common.WebtoonUtility;
 import com.kh.jdbc_oracle_spring.dao.GenreDao;
+import com.kh.jdbc_oracle_spring.dao.MemberDao;
 import com.kh.jdbc_oracle_spring.dao.WebtoonDao;
 import com.kh.jdbc_oracle_spring.vo.GenreVo;
+import com.kh.jdbc_oracle_spring.vo.MemberVo;
 import com.kh.jdbc_oracle_spring.vo.WebtoonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +24,12 @@ import java.util.List;
 public class WebtoonController {
     private final WebtoonDao webtoonDao;
     private final GenreDao genreDao;
+    private final MemberDao memberDao;
 
-    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao) {
+    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
         this.webtoonDao = webtoonDao;
         this.genreDao = genreDao;
+        this.memberDao = memberDao;
     }
 
     @GetMapping("")
@@ -47,7 +52,7 @@ public class WebtoonController {
         addHeaderAttribute(model);
         return "thymeleaf/index";
     }
-    
+
     // js 없애고, "" term 유효성 검사를 여기서 하자
     @GetMapping("search")
     public String searchWebtoon(@RequestParam(name = "term", required = true) String term, Model model) {
@@ -62,5 +67,6 @@ public class WebtoonController {
         model.addAttribute("toggleServiceName", "게시판");
         model.addAttribute("toggleServicePagePath", Path.GENERAL_BOARD_PAGE);
         model.addAttribute("serviceMainPagePath", Path.WEBTOON_PAGE);
+        model.addAttribute("currMemberNickname", JdbcOracleSpringApplication.currMemberNum != null ? memberDao.selectByMemberNum(JdbcOracleSpringApplication.currMemberNum).getMemberNickname() : null);
     }
 }
