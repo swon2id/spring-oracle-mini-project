@@ -7,6 +7,11 @@ html {
   overflow-y: scroll;
 }
 
+body {
+    background-color: #272727;
+    color: white;
+}
+
 main {
     min-height: calc(100dvh - 260px);
     padding: 60px 150px;

@@ -1,5 +1,6 @@
 package com.kh.jdbc_oracle_spring.common;
 
+import java.sql.Date;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
@@ -32,5 +33,9 @@ public class TimeUtility {
             case SUN: return 0;
             default: return -1; // 기본값
         }
+    }
+
+    public static Date getCurrentDateTime() {
+        return Date.valueOf(java.time.LocalDate.now(ZoneId.of("Asia/Seoul")));
     }
 }

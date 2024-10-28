@@ -7,6 +7,11 @@ html {
   overflow-y: scroll;
 }
 
+body {
+  background-color: #272727;
+  color: white;
+}
+
 main {
   min-height: calc(100dvh - 260px);
   padding: 60px 150px;
@@ -38,7 +43,7 @@ main {
   justify-content: space-between;
   align-items: center;
   width: 120px;
-  border: 1px solid black;
+  border: 1px solid #b3b3ae;
   font-size: 14px;
 }
 
@@ -116,10 +121,12 @@ ol {
   margin-top: 15px;
   display: grid;
   grid-template-columns: 33.33% 33.33% 33.33%;
-  border: 2px solid rgba(0, 0, 0, 0.15);
+  border: 2px solid #cdcdca;
   border-radius: 7px;
   box-sizing: border-box;
   padding: 20px 20px 0 0 ;
+    background-color: #222222;
+
 }
 
 .webtoon-list--thumbnail li {
@@ -177,18 +184,19 @@ ol {
 .webtoon-recommend-list > div ol {
   margin-top: 15px;
   flex: 1;
-  border: 2px solid rgba(0, 0, 0, 0.15);
+  border: 2px solid #cdcdca;
   border-radius: 7px;
   box-sizing: border-box;
   padding: 15px;
   font-size: 14px;
+  background-color: #222222;
 }
 
 .webtoon-recommend-list li {
   width: 100%;
   padding: 4px 0 4px 0;
   margin: 4px 0 4px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid #cdcdca;
 }
 
 .webtoon-recommend-list li:first-child {
@@ -197,5 +205,5 @@ ol {
 
 .webtoon-recommend-list li a {
   text-decoration: none;
-  color: black;
+  color: white;
 }

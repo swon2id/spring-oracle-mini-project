@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KH TOON 마이페이지</title>
+    <link rel="stylesheet" href="/assets/css/mypage-page.css">
+</head>
+
+<body>
+<div>
+    <button onclick="history.back()"><img src="/assets/img/left-arrow.png" /></button>
+    <h1>KH TOON 마이페이지</h1>
+    <span>선호장르 설정</span>
+    <form action="/member/mypage/submit" method="POST">
+        <label th:each="genre : ${genres}">
+            <span th:text="${genre.genreName}"></span>
+            <input type="checkbox" name="selectedGenres" th:value="${genre.genreName}"
+                   th:checked="${#lists.contains(favoriteGenreNumList, genre.genreNum)}"
+                   onchange="this.form.submit()">
+        </label>
+    </form>
+</div>
+</body>
+
+</html>

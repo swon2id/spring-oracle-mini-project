@@ -9,13 +9,13 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString // ?
 public class PostVo {
-    private int postNum;
+    private Integer postNum;
     private String postTitle;
     private String postContent;
     private Date postPublishedDate;
-    private int memberNum;
-    private int boardNum;
-    private int postVisit = 0;
+    private Integer memberNum;
+    private Integer boardNum;
+    private Integer postVisit = 0;
 
     public PostVo(int postNum, String postTitle, String postContent, Date postPublishedDate, int memberNum, int boardNum) {
         this.postNum = postNum;

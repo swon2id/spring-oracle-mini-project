@@ -8,7 +8,6 @@ import com.kh.jdbc_oracle_spring.dao.GenreDao;
 import com.kh.jdbc_oracle_spring.dao.MemberDao;
 import com.kh.jdbc_oracle_spring.dao.WebtoonDao;
 import com.kh.jdbc_oracle_spring.vo.GenreVo;
-import com.kh.jdbc_oracle_spring.vo.MemberVo;
 import com.kh.jdbc_oracle_spring.vo.WebtoonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +20,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class WebtoonController {
+public class MainController {
     private final WebtoonDao webtoonDao;
     private final GenreDao genreDao;
     private final MemberDao memberDao;
 
-    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
+    public MainController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
         this.webtoonDao = webtoonDao;
         this.genreDao = genreDao;
         this.memberDao = memberDao;
@@ -49,7 +48,7 @@ public class WebtoonController {
         model.addAttribute("kakaoWebtoons", kakaoWebtoons);
         model.addAttribute("naverRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.NAVER)));
         model.addAttribute("kakaoRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.KAKAO)));
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/index";
     }
 
@@ -58,15 +57,15 @@ public class WebtoonController {
     public String searchWebtoon(@RequestParam(name = "term", required = true) String term, Model model) {
         System.out.println("검색어 : " + term);
         model.addAttribute("term", term);
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/search/webtoon_search";
     }
 
-    private void addHeaderAttribute(Model model) {
+    private void addAttributeToHeader(Model model) {
         model.addAttribute("logoText", "KH TOON");
         model.addAttribute("toggleServiceName", "게시판");
         model.addAttribute("toggleServicePagePath", Path.GENERAL_BOARD_PAGE);
         model.addAttribute("serviceMainPagePath", Path.WEBTOON_PAGE);
-        model.addAttribute("currMemberNickname", JdbcOracleSpringApplication.currMemberNum != null ? memberDao.selectByMemberNum(JdbcOracleSpringApplication.currMemberNum).getMemberNickname() : null);
+        model.addAttribute("currMemberNickname", JdbcOracleSpringApplication.currMemberNum != null ? memberDao.selectNameByMemberNum(JdbcOracleSpringApplication.currMemberNum) : null);
     }
 }

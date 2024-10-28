@@ -5,18 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KH TOON 로그인</title>
+  <link rel="stylesheet" href="/assets/css/login-page.css">
 </head>
 
 <body>
-  <form action="/member/login/Authentication" method="POST">
-    <label>ID</label>
-    <input type="text" name="id" required/>
-    <label>Password</label>
-    <input type="text" name="password" required/>
-    <button>회원가입</button>
-    <button type="submit">로그인</button>
-  </form>
-  <button onclick="history.back()">뒤로</button>
+  <div>
+    <button onclick="history.back()"><img src="/assets/img/left-arrow.png" /></button>
+    <h1>KH TOON 로그인</h1>
+    <form action="/member/login/authentication" method="POST">
+      <label>아이디</label>
+      <input type="text" name="id" required/>
+      <label>비밀번호</label>
+      <input type="password" name="pw" maxlength="20" required/>
+      <button type="submit">로그인</button>
+    </form>
+  </div>
+  <div>
+    <button onclick="location.href='/member/register';">회원가입</button>
+  </div>
 </body>
 
 </html>

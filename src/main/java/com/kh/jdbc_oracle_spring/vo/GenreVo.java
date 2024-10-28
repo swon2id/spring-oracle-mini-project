@@ -8,6 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class GenreVo {
-    private int genreNum;
+    private Integer genreNum;
     private String genreName;
+
+    public final static String GENRE_NUM_STR = "GENRE_NUM";
+    public final static String GENRE_NAME_STR = "GENRE_NAME";
 }

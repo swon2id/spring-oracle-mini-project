@@ -1,6 +1,5 @@
 package com.kh.jdbc_oracle_spring.common;
 
-import com.kh.jdbc_oracle_spring.vo.GenreVo;
 import com.kh.jdbc_oracle_spring.vo.WebtoonVo;
 
 import java.util.*;

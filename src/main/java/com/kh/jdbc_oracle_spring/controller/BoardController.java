@@ -31,7 +31,7 @@ public class BoardController {
 
         model.addAttribute("boardName", "공지게시판");
         model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/board";
     }
 
@@ -54,7 +54,7 @@ public class BoardController {
         model.addAttribute("postPublishedDate", post.getPostPublishedDate());
         model.addAttribute("postVisit", post.getPostVisit());
         model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/post";
     }
 
@@ -68,7 +68,7 @@ public class BoardController {
 
         model.addAttribute("boardName", "자유게시판");
         model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/board";
     }
 
@@ -91,7 +91,7 @@ public class BoardController {
         model.addAttribute("postPublishedDate", post.getPostPublishedDate());
         model.addAttribute("postVisit", post.getPostVisit());
         model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/post";
     }
 
@@ -99,11 +99,11 @@ public class BoardController {
     public String searchBoard(@RequestParam(name = "term", required = true) String term, Model model) {
         System.out.println("검색어 : " + term);
         model.addAttribute("term", term);
-        addHeaderAttribute(model);
+        addAttributeToHeader(model);
         return "thymeleaf/search/board_search";
     }
 
-    private void addHeaderAttribute(Model model) {
+    private void addAttributeToHeader(Model model) {
         model.addAttribute("logoText", "KH TOON 커뮤니티");
         model.addAttribute("toggleServiceName", "웹툰");
         model.addAttribute("toggleServicePagePath", Path.WEBTOON_PAGE);
