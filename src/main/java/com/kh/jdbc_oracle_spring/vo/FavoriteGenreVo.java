@@ -15,13 +15,13 @@ public class FavoriteGenreVo {
         this.genreNum = genreNum;
     }
 
-    // GENRE 테이블 조인 처리용
+    // GENRE 테이블 조인 맵핑 용도
     public FavoriteGenreVo(int memberNum, int genreNum, String genreName) {
         this.memberNum = memberNum;
         this.genreNum = genreNum;
         this.genreName = genreName;
     }
 
-    // 조인 컬럼
+    // GENRE 테이블 조인 컬럼
     private String genreName = null;
 }

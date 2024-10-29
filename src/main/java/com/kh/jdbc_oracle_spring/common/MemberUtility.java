@@ -2,7 +2,6 @@ package com.kh.jdbc_oracle_spring.common;
 
 import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
 import com.kh.jdbc_oracle_spring.vo.MemberVo;
-
 import java.util.List;
 
 public class MemberUtility {
@@ -14,5 +13,13 @@ public class MemberUtility {
             }
         }
         return false;
+    }
+
+    public static boolean isLoggedIn() {
+        return JdbcOracleSpringApplication.currMemberNum != null;
+    }
+
+    public static void logout() {
+        JdbcOracleSpringApplication.currMemberNum = null;
     }
 }

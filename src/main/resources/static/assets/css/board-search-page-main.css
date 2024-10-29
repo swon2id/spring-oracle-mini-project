@@ -30,6 +30,41 @@ main {
   margin-right: 80px;
 }
 
+.search-result-item ol {
+  list-style: none;
+  padding: 0;
+}
+
+.search-result-item li {
+  margin-bottom: 40px;
+}
+
+.result-header a {
+  font-size: 18px;
+  color: #99c3ff;
+  text-decoration: none;
+}
+
+.result-header a:hover {
+  text-decoration: underline;
+}
+
+.result-header--info {
+  display: block;
+  font-size: 14px;
+  color: #bdc1c6;
+  margin: 5px 0;
+}
+
+.result-header span:first-child {
+  font-weight: bold;
+}
+
+.result-snippet p {
+  font-size: 14px;
+  color: #bdc1c6;
+}
+
 main > section:nth-child(2) {
   display: flex;
 }

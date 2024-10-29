@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KH TOON 커뮤니티</title>
+  <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/post-write-main.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+</head>
+
+<body>
+<div th:replace="~{thymeleaf/component/header :: header}"></div>
+<div th:replace="~{thymeleaf/component/main/post_write_main :: postWrite}"></div>
+<div th:replace="~{thymeleaf/component/footer :: footer}"></div>
+<script src="/assets/js/board_searchbox_handler.js"></script>
+</body>
+
+</html>

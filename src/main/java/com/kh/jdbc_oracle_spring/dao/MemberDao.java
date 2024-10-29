@@ -1,16 +1,8 @@
 package com.kh.jdbc_oracle_spring.dao;
 
-import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
-import com.kh.jdbc_oracle_spring.common.MemberUtility;
-import com.kh.jdbc_oracle_spring.common.TimeUtility;
 import com.kh.jdbc_oracle_spring.vo.MemberVo;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -27,6 +19,12 @@ public class MemberDao {
                 rs.getString("MEMBER_PW")
             )
         );
+    }
+
+    public int selectMemberTypeNumByMemberNum(int memberNum) {
+        String sql = "SELECT MEMBER_TYPE_NUM FROM MEMBER WHERE MEMBER_NUM = ?";
+        List<Integer> memberTypeList = jdbcTemplate.queryForList(sql, new Object[]{memberNum}, Integer.class);
+        return memberTypeList.isEmpty() ? -1 : memberTypeList.get(0);
     }
 
     public String selectNameByMemberNum(Integer memberNum) {

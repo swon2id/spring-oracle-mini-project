@@ -1,6 +1,7 @@
 package com.kh.jdbc_oracle_spring.common;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
@@ -35,7 +36,7 @@ public class TimeUtility {
         }
     }
 
-    public static Date getCurrentDateTime() {
-        return Date.valueOf(java.time.LocalDate.now(ZoneId.of("Asia/Seoul")));
+    public static Timestamp getCurrentTimestamp() {
+        return Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     }
 }

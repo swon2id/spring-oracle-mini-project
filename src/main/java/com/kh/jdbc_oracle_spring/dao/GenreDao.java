@@ -2,11 +2,7 @@ package com.kh.jdbc_oracle_spring.dao;
 
 import com.kh.jdbc_oracle_spring.vo.GenreVo;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository

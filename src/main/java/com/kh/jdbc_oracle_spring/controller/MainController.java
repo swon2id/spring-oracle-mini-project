@@ -55,7 +55,6 @@ public class MainController {
     // js 없애고, "" term 유효성 검사를 여기서 하자
     @GetMapping("search")
     public String searchWebtoon(@RequestParam(name = "term", required = true) String term, Model model) {
-        System.out.println("검색어 : " + term);
         model.addAttribute("term", term);
         addAttributeToHeader(model);
         return "thymeleaf/search/webtoon_search";

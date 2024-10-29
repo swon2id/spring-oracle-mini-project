@@ -2,9 +2,7 @@ package com.kh.jdbc_oracle_spring.common;
 
 import com.kh.jdbc_oracle_spring.vo.FavoriteGenreVo;
 import com.kh.jdbc_oracle_spring.vo.GenreVo;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FavoriteGenreUtility {
     public static int getGenreNumToDelete(List<FavoriteGenreVo> favoriteGenres, List<String> selectedGenres) {

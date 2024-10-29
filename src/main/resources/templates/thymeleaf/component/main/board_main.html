@@ -39,21 +39,23 @@
             <th>번호</th>
             <th style="text-align: left;">제목</th>
             <th>작성자</th>
-            <th>작성일</th>
+            <th>작성일시</th>
             <th>조회수</th>
           </tr>
           </thead>
-          <tbody>
-            <tr th:each="post : ${posts}" style="box-shadow: 0 0 2px rgba(0,0,0,0.2);">
+          <tbody th:with="emptyRows=${20 > posts.size() ? 20 - posts.size() : 0}">
+            <tr th:each="post, iterStat : ${posts}" style="box-shadow: 0 0 2px rgba(0,0,0,0.2);">
               <td th:text="${post.postNum}"></td>
               <td style="text-align: left;">
-                <a th:data-url="${post.postUrl}"
-                   onclick="location.href=this.getAttribute('data-url'); return false;"
+                <a th:href="${postUrls[iterStat.index]}"
                    th:text="${post.postTitle}"></a>
               </td>
-              <td th:text="${post.postAuthorName}"></td>
-              <td th:text="${post.postPublishedDate}"></td>
+              <td th:text="${post.memberNickname}"></td>
+              <td th:text="${#dates.format(post.postPublishedDate, 'yyyy-MM-dd HH:mm')}"></td>
               <td th:text="${post.postVisit}"></td>
+            </tr>
+            <tr th:each="i : ${#numbers.sequence(1, emptyRows)}">
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
           </tbody>
         </table>
@@ -64,5 +66,8 @@
         <button>▶</button>
       </div>
     </div>
+    <a th:if="${isPostWritableMember}" th:href="${writePostUrl}">
+      <button>게시글 쓰기</button>
+    </a>
   </section>
-</main>
+</main>write-post

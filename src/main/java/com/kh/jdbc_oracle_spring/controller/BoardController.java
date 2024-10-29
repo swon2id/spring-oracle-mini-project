@@ -1,106 +1,147 @@
 package com.kh.jdbc_oracle_spring.controller;
 
-import com.kh.jdbc_oracle_spring.common.Path;
-import com.kh.jdbc_oracle_spring.common.PostUtility;
-import com.kh.jdbc_oracle_spring.common.ReplyUtility;
+import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
+import com.kh.jdbc_oracle_spring.common.*;
+import com.kh.jdbc_oracle_spring.dao.MemberDao;
+import com.kh.jdbc_oracle_spring.dao.PostDao;
+import com.kh.jdbc_oracle_spring.dao.ReplyDao;
+import com.kh.jdbc_oracle_spring.dao.ReplyEvaluationDao;
 import com.kh.jdbc_oracle_spring.vo.PostVo;
+import com.kh.jdbc_oracle_spring.vo.ReplyEvaluationVo;
 import com.kh.jdbc_oracle_spring.vo.ReplyVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-    @GetMapping("notice")
-    public String enterNoticeBoard(Model model) {
-        // dao 결과 리턴 값 받기
-        // 20개 단위로 1페이지 분량만 시연할 것
-        List<PostVo> posts = new ArrayList<>();
-        posts.add(new PostVo(1, "제목1", "내용내용", Date.valueOf("2024-10-25"), 1, 0));
-        posts.add(new PostVo(2, "제목2", "내용내용", Date.valueOf("2024-10-25"), 2, 0));
-        posts.add(new PostVo(3, "제목3", "내용내용", Date.valueOf("2024-10-25"), 3, 0));
-        posts.add(new PostVo(4, "제목4", "내용내용", Date.valueOf("2024-10-25"), 4, 0));
-        posts.add(new PostVo(5, "제목5", "내용내용", Date.valueOf("2024-10-25"), 5, 0));
-        posts.add(new PostVo(6, "제목6", "내용내용", Date.valueOf("2024-10-25"), 6, 0));
-        posts.add(new PostVo(7, "제목7", "내용내용", Date.valueOf("2024-10-25"), 7, 0));
+    private final MemberDao memberDao;
+    private final PostDao postDao;
+    private final ReplyDao replyDao;
+    private final ReplyEvaluationDao replyEvaluationDao;
 
-        model.addAttribute("boardName", "공지게시판");
-        model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
+    public BoardController(MemberDao memberDao, PostDao postDao, ReplyDao replyDao, ReplyEvaluationDao replyEvaluationDao) {
+        this.memberDao = memberDao;
+        this.postDao = postDao;
+        this.replyDao = replyDao;
+        this.replyEvaluationDao = replyEvaluationDao;
+    }
+
+    @GetMapping("{boardType}")
+    public String enterBoard(@PathVariable("boardType") String boardType, Model model) {
+        if (!BoardUtility.isValidBoardType(boardType)) return "redirect:/board/general";
+
+        List<PostVo> posts = postDao.selectWithMemberNameByBoardNum(BoardUtility.getBoardNum(boardType));
+        model.addAttribute("boardName", BoardUtility.getBoardName(boardType));
+        model.addAttribute("posts", posts);
+        model.addAttribute("postUrls", PostUtility.getPostUrl(posts));
+        model.addAttribute("isPostWritableMember",
+            MemberUtility.isLoggedIn() &&
+            PostUtility.isPostWritableMember(boardType, memberDao.selectMemberTypeNumByMemberNum(JdbcOracleSpringApplication.currMemberNum))
+        );
+        model.addAttribute("writePostUrl", boardType + "/write-post");
         addAttributeToHeader(model);
         return "thymeleaf/board";
     }
 
-    @GetMapping("notice/post/{postId}")
-    public String readNoticePost(@PathVariable("postId") String postId, Model model) {
-        // dao 결과 리턴 값 받기
-        List<PostVo> posts = new ArrayList<>();
-        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 0));
-        PostVo post = PostUtility.setPostsWithMemberNameAndUrl(posts).get(0);
+    @GetMapping("{boardType}/post/{postNum}")
+    public String readPost(@PathVariable("boardType") String boardType, @PathVariable("postNum") int postNum, Model model) {
+        if (!BoardUtility.isValidBoardType(boardType)) return "redirect:/board/general";
 
-        List<ReplyVo> replys = new ArrayList<>();
-        replys.add(new ReplyVo(1, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 1, 1));
-        replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
-        replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
+        postDao.increaseVisitCountByPostNum(postNum);
+        PostVo post = postDao.selectPostWithMemberNameByPostNum(postNum);
 
-        model.addAttribute("boardName", "게시판 > 공지게시판");
+        model.addAttribute("boardName", "게시판 > " + BoardUtility.getBoardName(boardType));
         model.addAttribute("postTitle", post.getPostTitle());
-        model.addAttribute("postAuthorName", post.getPostAuthorName());
+        model.addAttribute("postAuthorName", post.getMemberNickname());
         model.addAttribute("postContent", post.getPostContent());
         model.addAttribute("postPublishedDate", post.getPostPublishedDate());
         model.addAttribute("postVisit", post.getPostVisit());
-        model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
+        model.addAttribute("isNoticeBoard", boardType.equals("notice"));
+        model.addAttribute("postNum", postNum);
+
+        if (boardType.equals("general")) {
+            List<ReplyVo> replys = replyDao.selectWithMemberNicknameByPostNum(postNum);
+            model.addAttribute("replys", replys);
+            model.addAttribute("memberNum", JdbcOracleSpringApplication.currMemberNum);
+            model.addAttribute("isLoggedIn", MemberUtility.isLoggedIn());
+            model.addAttribute("replyNumListOfCurrMember", MemberUtility.isLoggedIn() ?
+                    replyDao.selectReplyNumByMemberNum(JdbcOracleSpringApplication.currMemberNum)
+                    : new ArrayList<>()
+            );
+        } else {
+            model.addAttribute("replys", new ArrayList<>());
+        }
+
         addAttributeToHeader(model);
         return "thymeleaf/post";
     }
 
-    @GetMapping("general")
-    public String enterGeneralBoard(Model model) {
-        // dao 결과 리턴 값 받기
-        // 20개 단위로 1페이지 분량만 시연할 것
-        List<PostVo> posts = new ArrayList<>();
-        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 1));
-
-
-        model.addAttribute("boardName", "자유게시판");
-        model.addAttribute("posts", PostUtility.setPostsWithMemberNameAndUrl(posts));
-        addAttributeToHeader(model);
-        return "thymeleaf/board";
+    @GetMapping("{boardType}/write-post")
+    public String writePost(@PathVariable("boardType") String boardType, Model model) {
+        if (!BoardUtility.isValidBoardType(boardType) || !MemberUtility.isLoggedIn()) return "redirect:/board/general";
+        model.addAttribute("boardName", BoardUtility.getBoardName(boardType));
+        return "thymeleaf/write-post";
     }
 
-    @GetMapping("general/post/{postId}")
-    public String readGeneralPost(@PathVariable("postId") String postId, Model model) {
-        // dao 결과 리턴 값 받기
-        List<PostVo> posts = new ArrayList<>();
-        posts.add(new PostVo(1, "제목입니다.", "내용내용", Date.valueOf("2024-10-25"), 1, 1));
-        PostVo post = PostUtility.setPostsWithMemberNameAndUrl(posts).get(0);
+    @PostMapping("{boardType}/write-post/submit")
+    public String registPost(@PathVariable("boardType") String boardType, @RequestParam("postTitle") String postTitle, @RequestParam("postContent") String postContent) {
+        int boardNum;
+        if (
+            !BoardUtility.isValidBoardType(boardType) ||
+            !MemberUtility.isLoggedIn() ||
+            !PostUtility.isPostWritableMember(boardType, memberDao.selectMemberTypeNumByMemberNum(JdbcOracleSpringApplication.currMemberNum)) ||
+            postTitle == null || postTitle.isEmpty() ||
+            postContent == null || postContent.isEmpty()
+        ) return "redirect:/board/general";
 
-        List<ReplyVo> replys = new ArrayList<>();
-        replys.add(new ReplyVo(1, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 1, 1));
-        replys.add(new ReplyVo(2, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 2, 1));
-        replys.add(new ReplyVo(3, "댓글내용", Date.valueOf("2024-10-01"), 0, 0, 3, 1));
-
-        model.addAttribute("boardName", "게시판 > 자유게시판");
-        model.addAttribute("postTitle", post.getPostTitle());
-        model.addAttribute("postAuthorName", post.getPostAuthorName());
-        model.addAttribute("postContent", post.getPostContent());
-        model.addAttribute("postPublishedDate", post.getPostPublishedDate());
-        model.addAttribute("postVisit", post.getPostVisit());
-        model.addAttribute("replys", ReplyUtility.setReplysWithMemberName(replys));
-        addAttributeToHeader(model);
-        return "thymeleaf/post";
+        postDao.insert(new PostVo(postTitle, postContent, JdbcOracleSpringApplication.currMemberNum, BoardUtility.getBoardNum(boardType)));
+        return "redirect:/board/" + boardType;
     }
 
     @GetMapping("search")
-    public String searchBoard(@RequestParam(name = "term", required = true) String term, Model model) {
-        System.out.println("검색어 : " + term);
+    public String searchPost(@RequestParam(name = "term", required = true) String term, Model model) {
+        List<PostVo> posts = postDao.selectWithMemberNameByTerm(term);
         model.addAttribute("term", term);
+        model.addAttribute("posts", posts);
+        model.addAttribute("postUrls", PostUtility.getPostUrl(posts));
         addAttributeToHeader(model);
         return "thymeleaf/search/board_search";
+    }
+
+    @PostMapping("general/post/{postNum}/reply-submit")
+    public String submitReply(@PathVariable("postNum") int postNum, @RequestParam(name = "replyContent", required = true) String replyContent, @RequestParam(name = "memberNum", required = false) Integer memberNum) {
+        if (memberNum == null || replyContent.isEmpty()) return "redirect:/board/general/post/" + postNum;
+        replyDao.insert(new ReplyVo(replyContent, TimeUtility.getCurrentTimestamp(), memberNum, postNum));
+        return "redirect:/board/general/post/" + postNum;
+    }
+
+    @PostMapping("general/post/{postNum}/reply-delete")
+    public String deleteReply(@PathVariable("postNum") int postNum, @RequestParam("replyNum") int replyNum) {
+        replyEvaluationDao.deleteByReplyNum(replyNum);
+        replyDao.deleteByReplyNum(replyNum);
+        return "redirect:/board/general/post/" + postNum;
+    }
+
+    @PostMapping("general/post/{postNum}/reply-like/{replyNum}")
+    public String likeReply(@PathVariable("postNum") int postNum, @PathVariable("replyNum") int replyNum) {
+        if (replyEvaluationDao.selectCountByMemberNumAndReplyNum(JdbcOracleSpringApplication.currMemberNum, replyNum) == 0) {
+            replyEvaluationDao.insert(new ReplyEvaluationVo(JdbcOracleSpringApplication.currMemberNum, replyNum, ReplyEvaluationVo.LIKE));
+            replyDao.increaseLikeCountByReplyNum(replyNum);
+        }
+        return "redirect:/board/general/post/" + postNum;
+    }
+
+    @PostMapping("general/post/{postNum}/reply-dislike/{replyNum}")
+    public String dislikeReply(@PathVariable("postNum") int postNum, @PathVariable("replyNum") int replyNum) {
+        if (replyEvaluationDao.selectCountByMemberNumAndReplyNum(JdbcOracleSpringApplication.currMemberNum, replyNum) == 0) {
+            replyEvaluationDao.insert(new ReplyEvaluationVo(JdbcOracleSpringApplication.currMemberNum, replyNum, ReplyEvaluationVo.DISLIKE));
+            replyDao.increaseDislikeCountByReplyNum(replyNum);
+        }
+        return "redirect:/board/general/post/" + postNum;
     }
 
     private void addAttributeToHeader(Model model) {

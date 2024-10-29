@@ -1,0 +1,15 @@
+<main th:fragment="postWrite">
+    <span th:text="${boardName} + ' > 게시글 작성'"></span>
+    <button onclick="history.back()">뒤로</button>
+    <form class="post-container" action="write-post/submit" method="POST">
+        <div>
+            <label>제목</label>
+            <input placeholder="제목을 입력해 주세요." type="text" name="postTitle" minlength="1" maxlength="100" required />
+        </div>
+        <div>
+            <label>내용</label>
+            <textarea name="postContent" placeholder="내용을 입력해 주세요." minlength="1" maxlength="1000" required></textarea>
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</main>

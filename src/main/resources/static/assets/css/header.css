@@ -73,3 +73,8 @@ header > div:last-child {
 .search-box img {
   width: 100%;
 }
+
+body {
+  background-color: #272727;
+  color: white;
+}

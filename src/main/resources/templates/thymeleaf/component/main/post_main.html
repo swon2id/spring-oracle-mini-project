@@ -8,29 +8,46 @@
       <span th:text="'제목 : ' + ${postTitle}"></span>
       <div>
         <span th:text="'작성자 : ' + ${postAuthorName}"></span>
-        <span th:text="'작성일 : ' + ${postPublishedDate}"></span>
+        <span th:text="'작성일 : ' + ${#dates.format(postPublishedDate, 'yyyy-MM-dd HH:mm')}"></span>
         <span th:text="'조회수 : ' + ${postVisit}"></span>
       </div>
     </div>
     <div class="post-content">
       <p th:text="${postContent}"></p>
     </div>
-    <div class="post-reply">
+    <div th:if="${!isNoticeBoard}" class="add-reply-container">
+      <span>댓글 작성</span>
+      <form th:action="${postNum} + '/reply-submit'" method="POST">
+        <textarea name="replyContent" cols="5" placeholder="내용을 입력해 주세요." minlength="1" maxlength="500" required></textarea>
+        <input type="hidden" name="memberNum" th:value="${memberNum}"/>
+        <button type="submit">등록</button>
+      </form>
+    </div>
+    <div th:if="${!#lists.isEmpty(replys)}" class="post-reply-container">
       <span>댓글 목록</span>
       <div>
         <ol>
           <li th:each="reply: ${replys}">
             <div>
-              <span th:text="'작성자 : ' + ${reply.replyAuthorName}"></span>
-              <span th:text="'작성일 : ' + ${reply.replyPublishedDate}"></span>
+              <span th:text="'작성자 : ' + ${reply.memberNickname}"></span>
+              <span th:text="'작성일 : ' + ${#dates.format(reply.replyPublishedDate, 'yyyy-MM-dd HH:mm')}"></span>
             </div>
             <p th:text="${reply.replyContent}"></p>
             <div>
               <span th:text="'공감 : ' + ${reply.replyLikeCount}"></span>
-              <button onclick="alert('좋아요!');">👍</button>
+              <form th:if="${isLoggedIn}" th:action="${postNum} + '/reply-like/' + ${reply.replyNum}" method="POST">
+                <button type="submit">👍</button>
+              </form>
               <span th:text="'비공감 : ' + ${reply.replyDislikeCount}"></span>
-              <button onclick="alert('싫어요!');">👎</button>
+              <form th:if="${isLoggedIn}" th:action="${postNum} + '/reply-dislike/' + ${reply.replyNum}" method="POST">
+                <button type="submit">👍</button>
+              </form>
             </div>
+            <form th:if="${replyNumListOfCurrMember.contains(reply.replyNum)}"
+                  th:action="${postNum} + '/reply-delete'" method="POST">
+              <button type="submit">삭제</button>
+              <input type="hidden" name="replyNum" th:value="${reply.replyNum}"/>
+            </form>
           </li>
         </ol>
       </div>

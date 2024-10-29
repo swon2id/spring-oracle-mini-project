@@ -1,15 +1,21 @@
 <main th:fragment="boardSearch">
   <div class="search-result-msg">
-    <p>"<span th:text="${term}"></span>"에 대한 검색결과: 5건</p>
+    <span th:text="|&quot;${term}&quot; 에 대한 검색 결과 ${posts.size()}건|"></span>
   </div>
   <section>
     <div class="search-result-item">
-      <span>검색 결과</span>
-      <div>
-        <ul>
-
-        </ul>
-      </div>
+      <ol>
+        <li th:each="post : ${posts}">
+          <div class="result-header">
+            <span class="result-header--info" th:text="${post.boardNum == 1 ? '[ 공지 ]' : '[ 자유 ]'}"></span>
+            <a href="" th:text="${post.postTitle}"></a>
+            <span class="result-header--info" th:text="${post.memberNickname} + ' | ' + ${post.postPublishedDate}"></span>
+          </div>
+          <div class="result-snippet">
+            <p th:text="${post.postContent.length() > 200 ? #strings.substring(post.postContent, 0, 200) + '...' : post.postContent}">내용</p>
+          </div>
+        </li>
+      </ol>
     </div>
     <div class="board-recommend-list">
       <span>인기 게시글</span>
