@@ -48,10 +48,10 @@
             <span>네이버 웹툰</span>
             <ol>
               <li th:each="webtoon : ${naverWebtoons}">
-                <a th:href="'http://' + ${webtoon.webtoonPageUrl}"
+                <a th:href="${webtoon.webtoonPageUrl}"
                    target="_blank"
                    rel="noopener noreferrer">
-                  <img th:src="'http://' + ${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
+                  <img th:src="${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
                 </a>
                 <span th:text="${webtoon.webtoonTitle}"></span>
                 <span th:text="${webtoon.webtoonAuthor}"></span>
@@ -67,10 +67,10 @@
             <span>카카오 웹툰</span>
             <ol>
               <li th:each="webtoon : ${kakaoWebtoons}">
-                <a th:href="'http://' + ${webtoon.webtoonPageUrl}"
+                <a th:href="${webtoon.webtoonPageUrl}"
                    target="_blank"
                    rel="noopener noreferrer">
-                  <img th:src="'http://' + ${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
+                  <img th:src="${webtoon.webtoonThumbnailUrl}" alt="썸네일" />
                 </a>
                 <span th:text="${webtoon.webtoonTitle}"></span>
                 <span th:text="${webtoon.webtoonAuthor}"></span>

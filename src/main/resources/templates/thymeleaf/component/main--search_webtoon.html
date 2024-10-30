@@ -1,0 +1,26 @@
+<main th:fragment="webtoonSearch">
+  <div class="search-result-msg">
+    <span th:text="|&quot;${term}&quot; 에 대한 검색 결과 ${webtoons.size()}건|"></span>
+  </div>
+  <section>
+    <div class="search-result-item">
+      <ol>
+        <li th:each="webtoon : ${webtoons}">
+          <span th:text="${webtoon.platformNum == 1 ? '[ 네이버 웹툰 ]' : '[ 카카오 페이지 웹툰 ]'}"></span>
+          <div>
+            <a th:href="${webtoon.webtoonPageUrl}"
+               target="_blank"
+               rel="noopener noreferrer">
+              <img th:src="${webtoon.webtoonThumbnailUrl}" alt="썸네일"/>
+            </a>
+            <div>
+              <span th:text="${webtoon.webtoonTitle}"></span>
+              <span th:text="${webtoon.webtoonAuthor}"></span>
+              <span th:text="'⭐ ' + ${webtoon.webtoonRating}"></span>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+</main>

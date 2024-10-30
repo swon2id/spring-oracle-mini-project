@@ -39,30 +39,36 @@ main {
   margin-bottom: 40px;
 }
 
-.result-header a {
-  font-size: 18px;
-  color: #99c3ff;
-  text-decoration: none;
+.search-result-item li > div {
+  display: flex;
 }
 
-.result-header a:hover {
+li a:hover {
   text-decoration: underline;
 }
 
-.result-header--info {
+li a img{
+  width: 150px;
+}
+
+li span:first-child {
+  font-weight: bold;
+}
+
+.search-result-item li > div > div {
+  margin-left: 30px;
+}
+
+.search-result-item li > div > div span {
+    font-size: 18px;
+
+}
+
+li span {
   display: block;
   font-size: 14px;
   color: #bdc1c6;
   margin: 5px 0;
-}
-
-.result-header span:first-child {
-  font-weight: bold;
-}
-
-.result-snippet p {
-  font-size: 14px;
-  color: #bdc1c6;
 }
 
 main > section:nth-child(2) {

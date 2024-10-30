@@ -16,8 +16,8 @@ public class GenreDao {
     public List<GenreVo> select() {
         String sql = "SELECT * FROM GENRE";
         return jdbcTemplate.query(sql, (rs, rownum) -> new GenreVo(
-            rs.getInt(GenreVo.GENRE_NUM_STR),
-            rs.getString(GenreVo.GENRE_NAME_STR)
+            rs.getInt("GENRE_NUM"),
+            rs.getString("GENRE_NAME")
         ));
     }
 }

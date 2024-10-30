@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @GetMapping("{boardType}")
-    public String enterBoard(@PathVariable("boardType") String boardType, Model model) {
+    public String boardPageInit(@PathVariable("boardType") String boardType, Model model) {
         if (!BoardUtility.isValidBoardType(boardType)) return "redirect:/board/general";
 
         List<PostVo> posts = postDao.selectWithMemberNameByBoardNum(BoardUtility.getBoardNum(boardType));
@@ -103,13 +103,16 @@ public class BoardController {
     }
 
     @GetMapping("search")
-    public String searchPost(@RequestParam(name = "term", required = true) String term, Model model) {
+    public String searchPost(
+            @RequestParam(name = "term", required = true) String term,
+            Model model
+    ) {
         List<PostVo> posts = postDao.selectWithMemberNameByTerm(term);
         model.addAttribute("term", term);
         model.addAttribute("posts", posts);
         model.addAttribute("postUrls", PostUtility.getPostUrl(posts));
         addAttributeToHeader(model);
-        return "thymeleaf/search/board_search";
+        return "thymeleaf/board_search";
     }
 
     @PostMapping("general/post/{postNum}/reply-submit")

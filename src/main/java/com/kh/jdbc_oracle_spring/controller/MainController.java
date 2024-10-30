@@ -32,16 +32,43 @@ public class MainController {
     }
 
     @GetMapping("")
-    public String initWebtoonPage(@RequestParam(name = "tab", required = false) String tab, @RequestParam(name = "genre", required = false) List<String> selectedGenres, Model model) {
+    public String mainPageInit(
+            @RequestParam(name = "tab", required = false) String tab,
+            @RequestParam(name = "genre", required = false) List<String> selectedGenres,
+            Model model
+    ) {
         String dayOfWeek;
-        if (tab == null || tab.isEmpty() || TimeUtility.convertDayOfWeekToInt(tab) == -1) dayOfWeek = TimeUtility.getDayOfWeek();
+        if (
+            tab == null || tab.isEmpty() ||
+            !WebtoonUtility.isValidDayParam(tab)
+        ) dayOfWeek = TimeUtility.getDayOfWeek();
         else dayOfWeek = tab;
 
-        List<GenreVo> genres = genreDao.select();
-        List<WebtoonVo> naverWebtoons = webtoonDao.selectByGenreAndDayOfWeek(WebtoonVo.NAVER, selectedGenres, TimeUtility.convertDayOfWeekToInt(dayOfWeek));
-        List<WebtoonVo> kakaoWebtoons = webtoonDao.selectByGenreAndDayOfWeek(WebtoonVo.KAKAO, selectedGenres, TimeUtility.convertDayOfWeekToInt(dayOfWeek));
+        List<WebtoonVo> naverWebtoons;
+        List<WebtoonVo> kakaoWebtoons;
+        if (selectedGenres == null || selectedGenres.isEmpty()) {
+            naverWebtoons = webtoonDao.selectByReleaseDay(
+                WebtoonVo.NAVER,
+                WebtoonUtility.convertDayOfWeekTabToInt(dayOfWeek)
+            );
+            kakaoWebtoons = webtoonDao.selectByReleaseDay(
+                WebtoonVo.KAKAO,
+                WebtoonUtility.convertDayOfWeekTabToInt(dayOfWeek)
+            );
+        } else {
+            naverWebtoons = webtoonDao.selectByGenreAndReleaseDay (
+                WebtoonVo.NAVER,
+                WebtoonUtility.convertSelectedGenresToIntList(selectedGenres),
+                WebtoonUtility.convertDayOfWeekTabToInt(dayOfWeek)
+            );
+            kakaoWebtoons = webtoonDao.selectByGenreAndReleaseDay(
+                WebtoonVo.KAKAO,
+                WebtoonUtility.convertSelectedGenresToIntList(selectedGenres),
+                WebtoonUtility.convertDayOfWeekTabToInt(dayOfWeek)
+            );
+        }
 
-        model.addAttribute("genres", genres);
+        model.addAttribute("genres", genreDao.select());
         model.addAttribute("selectedGenres", selectedGenres != null ? selectedGenres : new ArrayList<>());
         model.addAttribute("currentTab", dayOfWeek);
         model.addAttribute("naverWebtoons", naverWebtoons);
@@ -54,10 +81,15 @@ public class MainController {
 
     // js 없애고, "" term 유효성 검사를 여기서 하자
     @GetMapping("search")
-    public String searchWebtoon(@RequestParam(name = "term", required = true) String term, Model model) {
+    public String searchWebtoon(
+            @RequestParam(name = "term", required = true) String term,
+            Model model
+    ) {
+        List<WebtoonVo> webtoons = webtoonDao.selectWithGenreNameByTerm(term);
         model.addAttribute("term", term);
+        model.addAttribute("webtoons", webtoons);
         addAttributeToHeader(model);
-        return "thymeleaf/search/webtoon_search";
+        return "thymeleaf/webtoon_search";
     }
 
     private void addAttributeToHeader(Model model) {
