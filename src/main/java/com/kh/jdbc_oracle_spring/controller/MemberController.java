@@ -152,8 +152,8 @@ public class MemberController {
     @PostMapping("mypage/delete")
     public String deleteMember() {
         if (!MemberUtility.isLoggedIn()) return "redirect:/";
-        favoriteGenreDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
 
+        // 현재 유저의 게시글 조회
         List<Integer> posts = postDao.selectPostNumByMemberNum(JdbcOracleSpringApplication.currMemberNum);
         for (int postNum: posts) {
             // 현재 유저의 게시글에 달린 모든 댓글의 댓글 평가 삭제 후 해당 댓글 삭제
