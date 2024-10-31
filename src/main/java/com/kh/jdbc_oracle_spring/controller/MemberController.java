@@ -95,7 +95,7 @@ public class MemberController {
         @RequestParam("birth") Date birthDate,
         @RequestParam(name = "referer", required = true) String referer
     ) {
-        if (memberDao.insert(new MemberVo(id, pw, email, birthDate, nickname))) return "redirect:/";
+        if (memberDao.insert(new MemberVo(id, pw, email, birthDate, nickname))) return "redirect:" + referer;
         return "redirect:/member/register?redirectFrom=" + referer;
     }
 
@@ -105,14 +105,16 @@ public class MemberController {
         @RequestParam("pw") String pw,
         @RequestParam(name = "referer", required = true) String referer
     ) {
-        if (MemberUtility.login(id, pw, memberDao.selectById(id))) return "redirect:/";
+        if (MemberUtility.login(id, pw, memberDao.selectById(id))) return "redirect:" + referer;
         return "redirect:/member/login?redirectFrom=" + referer;
     }
 
     @PostMapping("logout")
-    public String logout() {
+    public String logout(
+        HttpServletRequest request
+    ) {
         MemberUtility.logout();
-        return "redirect:/";
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @PostMapping("mypage/submit")

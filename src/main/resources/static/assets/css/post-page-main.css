@@ -23,7 +23,13 @@ main > span {
   font-weight: bold;
 }
 
-main > button {
+main > form > button {
+  position: absolute;
+  top: 110px;
+  right: 210px;
+}
+
+main > a > button {
   position: absolute;
   top: 110px;
   right: 150px;
@@ -54,6 +60,11 @@ main > div {
   padding: 20px;
   box-shadow: 0 0 3px #cdcdca;
   min-height: calc(100dvh - 180px - 254px);
+}
+
+.post-content p {
+  width: inherit;
+  word-wrap: break-word;
 }
 
 .add-reply-container > span {

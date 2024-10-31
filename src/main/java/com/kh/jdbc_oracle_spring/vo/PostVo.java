@@ -27,11 +27,12 @@ public class PostVo {
     }
 
     // MEMBER 테이블 조인 맵핑 용도
-    public PostVo(int postNum, String postTitle, String postContent, Timestamp postPublishedDate, int postVisit, int boardNum, String memberNickname) {
+    public PostVo(int postNum, String postTitle, String postContent, Timestamp postPublishedDate, int memberNum, int postVisit, int boardNum, String memberNickname) {
         this.postNum = postNum;
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postPublishedDate = postPublishedDate;
+        this.memberNum = memberNum;
         this.postVisit = postVisit;
         this.boardNum = boardNum;
         this.memberNickname = memberNickname;

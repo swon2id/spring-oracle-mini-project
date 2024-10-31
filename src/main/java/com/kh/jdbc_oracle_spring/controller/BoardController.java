@@ -55,7 +55,7 @@ public class BoardController {
         model.addAttribute("writePostUrl", boardType + "/write-post");
 
         // 헤더 렌더링에 필요한 값 전달
-        addAttributeToHeader(model);
+        addAttributeToHeader(model, boardType);
         return "thymeleaf/board";
     }
 
@@ -79,6 +79,8 @@ public class BoardController {
         model.addAttribute("postVisit", post.getPostVisit());
         model.addAttribute("isNoticeBoard", boardType.equals("notice"));
         model.addAttribute("postNum", postNum);
+        model.addAttribute("isPostAuthor", PostUtility.isPostAuthor(post.getMemberNum(), JdbcOracleSpringApplication.currMemberNum));
+        model.addAttribute("postDeleteUrl", "/board/" + boardType + "/post/" + postNum + "/delete");
 
         // 자유게시판인 경우 댓글 데이터도 model에 전달
         if (boardType.equals("general")) {
@@ -99,7 +101,7 @@ public class BoardController {
         }
 
         // 헤더 렌더링에 필요한 값 전달
-        addAttributeToHeader(model);
+        addAttributeToHeader(model, boardType);
         return "thymeleaf/post";
     }
 
@@ -121,7 +123,7 @@ public class BoardController {
         model.addAttribute("boardName", BoardUtility.getBoardName(boardType));
 
         // 헤더 렌더링에 필요한 값 전달
-        addAttributeToHeader(model);
+        addAttributeToHeader(model, boardType);
         return "thymeleaf/write-post";
     }
 
@@ -148,6 +150,30 @@ public class BoardController {
         return "redirect:/board/" + boardType;
     }
 
+    @PostMapping("{boardType}/post/{postNum}/delete")
+    public String deletePost(
+            @PathVariable("boardType") String boardType,
+            @PathVariable("postNum") Integer postNum
+    ) {
+        // 1) 없는 게시판 유형이거나
+        // 2) 로그인 상태가 아니거나
+        // 3) 삭제할 postNum이 전달되지 않은 경우
+        if (
+            !BoardUtility.isValidBoardType(boardType) ||
+            !MemberUtility.isLoggedIn() ||
+            postNum == null
+        ) return "redirect:/board/general";
+
+        List<Integer> replyNumListToDelete = replyDao.selectReplyNumByPostNum(postNum);
+        for (int replyNum: replyNumListToDelete) {
+            replyEvaluationDao.deleteByReplyNum(replyNum);
+            replyDao.deleteByReplyNum(replyNum);
+        }
+
+        postDao.deleteByPostNumAndMemberNum(postNum, JdbcOracleSpringApplication.currMemberNum);
+        return "redirect:/board/" + boardType;
+    }
+
     @GetMapping("search")
     public String searchPost(
             @RequestParam(name = "term", required = true) String term,
@@ -162,7 +188,7 @@ public class BoardController {
         model.addAttribute("postUrls", PostUtility.getPostUrl(posts));
 
         // 헤더 렌더링에 필요한 값 전달
-        addAttributeToHeader(model);
+        addAttributeToHeader(model, "general");
         return "thymeleaf/board_search";
     }
 
@@ -243,12 +269,12 @@ public class BoardController {
         return "redirect:/board/general/post/" + postNum;
     }
 
-    private void addAttributeToHeader(Model model) {
+    private void addAttributeToHeader(Model model, String boardType) {
         model.addAttribute("logoText", "KH TOON 커뮤니티");
         model.addAttribute("toggleServiceName", "웹툰 조회 서비스로 이동");
         model.addAttribute("toggleServicePagePath", Path.WEBTOON_PAGE);
-        model.addAttribute("serviceMainPagePath", Path.GENERAL_BOARD_PAGE);
-        model.addAttribute("noticeBoardPagePath", Path.NOTICE_BOARD_PAGE);
+
+        model.addAttribute("serviceMainPagePath", boardType.equals("notice") ? Path.NOTICE_BOARD_PAGE : Path.GENERAL_BOARD_PAGE);
         model.addAttribute("currMemberNickname", MemberUtility.isLoggedIn() ? memberDao.selectNameByMemberNum(JdbcOracleSpringApplication.currMemberNum) : null);
     }
 }

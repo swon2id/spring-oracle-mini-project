@@ -15,7 +15,7 @@ public class PostDao {
     public PostDao(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
     public List<PostVo> selectWithMemberNameByBoardNum(int boardNum) {
-        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
+        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, MEMBER_NUM, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
         + " FROM POST p"
         + " JOIN MEMBER m"
         + " USING(MEMBER_NUM)"
@@ -27,6 +27,7 @@ public class PostDao {
             rs.getString("POST_TITLE"),
             rs.getString("POST_CONTENT"),
             rs.getTimestamp("POST_PUBLISHED_DATE"),
+            rs.getInt("MEMBER_NUM"),
             rs.getInt("POST_VISIT"),
             rs.getInt("BOARD_NUM"),
             rs.getString("MEMBER_NICKNAME")
@@ -34,7 +35,7 @@ public class PostDao {
     }
 
     public PostVo selectPostWithMemberNameByPostNum(int postNum) {
-        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
+        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, MEMBER_NUM, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
                 + " FROM POST p"
                 + " JOIN MEMBER m"
                 + " USING(MEMBER_NUM)"
@@ -43,7 +44,7 @@ public class PostDao {
     }
 
     public List<PostVo> selectWithMemberNameByTerm(String term) {
-        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
+        String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, MEMBER_NUM, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
                 + " FROM POST p JOIN MEMBER m"
                 + " USING(MEMBER_NUM)"
                 + " WHERE p.POST_TITLE LIKE '%" + term + "%'"
@@ -56,6 +57,11 @@ public class PostDao {
     public void insert(PostVo vo) {
         String sql = "INSERT INTO POST VALUES(SEQ_POST_SEQUENCE.nextval, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, vo.getPostTitle(), vo.getPostContent(), vo.getPostPublishedDate(), vo.getPostVisit(), vo.getMemberNum(), vo.getBoardNum());
+    }
+
+    public void deleteByPostNumAndMemberNum(int postNum, int memberNum) {
+        String sql = "DELETE FROM POST WHERE POST_NUM = ? AND MEMBER_NUM = ?";
+        jdbcTemplate.update(sql, postNum, memberNum);
     }
 
     public void increaseVisitCountByPostNum(int postNum) {
@@ -71,6 +77,7 @@ public class PostDao {
                 rs.getString("POST_TITLE"),
                 rs.getString("POST_CONTENT"),
                 rs.getTimestamp("POST_PUBLISHED_DATE"),
+                rs.getInt("MEMBER_NUM"),
                 rs.getInt("POST_VISIT"),
                 rs.getInt("BOARD_NUM"),
                 rs.getString("MEMBER_NICKNAME")

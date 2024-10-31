@@ -36,9 +36,19 @@ public class ReplyDao {
         return jdbcTemplate.queryForList(sql, Integer.class);
     }
 
+    public List<Integer> selectReplyNumByPostNum(int postNum) {
+        String sql = "SELECT REPLY_NUM FROM REPLY WHERE POST_NUM = " + postNum;
+        return jdbcTemplate.queryForList(sql, Integer.class);
+    }
+
     public void insert(ReplyVo vo) {
         String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY_SEQUENCE.nextval, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, vo.getReplyContent(), vo.getReplyPublishedDate(), vo.getReplyLikeCount(), vo.getReplyDislikeCount(), vo.getMemberNum(), vo.getPostNum());
+    }
+
+    public void deleteByReplyNum(int replyNum) {
+        String sql = "DELETE FROM REPLY WHERE REPLY_NUM = ?";
+        jdbcTemplate.update(sql, replyNum);
     }
 
     public void deleteByReplyNumAndMemberNum(int replyNum, int memberNum) {

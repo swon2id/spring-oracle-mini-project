@@ -27,4 +27,9 @@ public class PostUtility {
             return true;
         }
     }
+
+    public static boolean isPostAuthor(int postAutuor, Integer memberNum) {
+        if (!MemberUtility.isLoggedIn()) return false;
+        return postAutuor == memberNum;
+    }
 }
