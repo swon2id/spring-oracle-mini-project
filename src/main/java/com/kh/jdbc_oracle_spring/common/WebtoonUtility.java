@@ -15,13 +15,14 @@ public class WebtoonUtility {
     private static final int 판타지 = GenreVo.판타지;
     private static final int 기타 = GenreVo.기타;
 
-    /**
-     * 평점을 기준으로 상위 10개의 웹툰VO 리스트를 가져옵니다.
-     *
-     * @param webtoons      웹툰VO 리스트
-     * @return 평점을 기준으로 내림차순으로 정렬된 상위 10개의 웹툰VO 리스트
-     */
-    public static List<WebtoonVo> getTop10List(List<WebtoonVo> webtoons) {
+    public static List<WebtoonVo> getTop10List(List<WebtoonVo> webtoons, List<Integer> favoriteGenres) {
+        if (MemberUtility.isLoggedIn() && !favoriteGenres.isEmpty()) {
+            return webtoons.stream()
+                    .filter(w -> favoriteGenres.contains(w.getGenreNum()))
+                    .sorted(Comparator.comparing(WebtoonVo::getWebtoonRating).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
         return webtoons.stream()
                 .sorted(Comparator.comparing(WebtoonVo::getWebtoonRating).reversed())
                 .limit(10)

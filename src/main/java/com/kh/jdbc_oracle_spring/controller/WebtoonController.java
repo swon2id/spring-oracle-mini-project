@@ -5,6 +5,7 @@ import com.kh.jdbc_oracle_spring.common.MemberUtility;
 import com.kh.jdbc_oracle_spring.common.Path;
 import com.kh.jdbc_oracle_spring.common.TimeUtility;
 import com.kh.jdbc_oracle_spring.common.WebtoonUtility;
+import com.kh.jdbc_oracle_spring.dao.FavoriteGenreDao;
 import com.kh.jdbc_oracle_spring.dao.GenreDao;
 import com.kh.jdbc_oracle_spring.dao.MemberDao;
 import com.kh.jdbc_oracle_spring.dao.WebtoonDao;
@@ -24,11 +25,13 @@ public class WebtoonController {
     private final WebtoonDao webtoonDao;
     private final GenreDao genreDao;
     private final MemberDao memberDao;
+    private final FavoriteGenreDao favoriteGenreDao;
 
-    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
+    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao, FavoriteGenreDao favoriteGenreDao) {
         this.webtoonDao = webtoonDao;
         this.genreDao = genreDao;
         this.memberDao = memberDao;
+        this.favoriteGenreDao = favoriteGenreDao;
     }
 
     @GetMapping("")
@@ -73,8 +76,10 @@ public class WebtoonController {
         model.addAttribute("currentTab", dayOfWeek);
         model.addAttribute("naverWebtoons", naverWebtoons);
         model.addAttribute("kakaoWebtoons", kakaoWebtoons);
-        model.addAttribute("naverRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.NAVER)));
-        model.addAttribute("kakaoRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.KAKAO)));
+
+        List<Integer> memberFavoriteGenres = MemberUtility.isLoggedIn() ?  favoriteGenreDao.selectGenreNumByMemberNum(JdbcOracleSpringApplication.currMemberNum) : new ArrayList<>();
+        model.addAttribute("naverRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.NAVER), memberFavoriteGenres));
+        model.addAttribute("kakaoRecommendList", WebtoonUtility.getTop10List(webtoonDao.selectByPlatform(WebtoonVo.KAKAO), memberFavoriteGenres));
         addAttributeToHeader(model);
         return "thymeleaf/index";
     }
