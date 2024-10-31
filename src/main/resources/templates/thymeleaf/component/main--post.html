@@ -1,7 +1,9 @@
 <main th:fragment="post">
   <span th:text="${boardName}"></span>
-  <button style="display: none;">수정</button>
-  <button style="display: none;">삭제</button>
+
+  <form th:if="${isPostAuthor}" th:action="${postModifyUrl}">
+    <button type="submit">수정</button>
+  </form>
 
   <form th:if="${isPostAuthor}" th:action="${postDeleteUrl}" method="POST">
     <button type="submit">삭제</button>

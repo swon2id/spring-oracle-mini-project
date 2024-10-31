@@ -38,6 +38,12 @@ public class PostVo {
         this.memberNickname = memberNickname;
     }
 
+    // 수정용
+    public PostVo(String postTitle, String postContent) {
+        this.postTitle = postTitle;
+        this.postContent = postContent;
+    }
+
     // MEMBER 테이블 조인 컬럼
     private String memberNickname = null;
 

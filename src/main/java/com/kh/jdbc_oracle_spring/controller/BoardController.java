@@ -9,6 +9,7 @@ import com.kh.jdbc_oracle_spring.dao.ReplyEvaluationDao;
 import com.kh.jdbc_oracle_spring.vo.PostVo;
 import com.kh.jdbc_oracle_spring.vo.ReplyEvaluationVo;
 import com.kh.jdbc_oracle_spring.vo.ReplyVo;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +82,7 @@ public class BoardController {
         model.addAttribute("postNum", postNum);
         model.addAttribute("isPostAuthor", PostUtility.isPostAuthor(post.getMemberNum(), JdbcOracleSpringApplication.currMemberNum));
         model.addAttribute("postDeleteUrl", "/board/" + boardType + "/post/" + postNum + "/delete");
+        model.addAttribute("postModifyUrl", "/board/" + boardType + "/post/" + postNum + "/modify");
 
         // 자유게시판인 경우 댓글 데이터도 model에 전달
         if (boardType.equals("general")) {
@@ -108,7 +110,10 @@ public class BoardController {
     @GetMapping("{boardType}/write-post")
     public String writePost(
         @PathVariable("boardType") String boardType,
-        Model model
+        @RequestParam(name = "referer", required = false) String referer,
+        @RequestParam(name = "redirectFrom", required = false) String redirectFrom,
+        Model model,
+        HttpServletRequest request
     ) {
         // 1) 없는 게시판 유형이거나
         // 2) 로그인 상태가 아니거나
@@ -118,9 +123,16 @@ public class BoardController {
             !MemberUtility.isLoggedIn() ||
             !PostUtility.isPostWritableMember(boardType, memberDao.selectMemberTypeNumByMemberNum(JdbcOracleSpringApplication.currMemberNum))
         ) return "redirect:/board/general";
-
         // 페이지에 렌더링할 텍스트 전달
         model.addAttribute("boardName", BoardUtility.getBoardName(boardType));
+
+        if (redirectFrom == null) {
+            referer = request.getHeader("Referer");
+        } else {
+            referer = redirectFrom;
+        }
+        model.addAttribute("referer", referer);
+        model.addAttribute("prevPageUrl", referer);
 
         // 헤더 렌더링에 필요한 값 전달
         addAttributeToHeader(model, boardType);
@@ -161,6 +173,7 @@ public class BoardController {
         if (
             !BoardUtility.isValidBoardType(boardType) ||
             !MemberUtility.isLoggedIn() ||
+            !PostUtility.isPostWritableMember(boardType, JdbcOracleSpringApplication.currMemberNum) ||
             postNum == null
         ) return "redirect:/board/general";
 
@@ -172,6 +185,65 @@ public class BoardController {
 
         postDao.deleteByPostNumAndMemberNum(postNum, JdbcOracleSpringApplication.currMemberNum);
         return "redirect:/board/" + boardType;
+    }
+
+    @GetMapping("{boardType}/post/{postNum}/modify")
+    public String modifyPost(
+            @PathVariable("boardType") String boardType,
+            @PathVariable("postNum") Integer postNum,
+            @RequestParam(name = "referer", required = false) String referer,
+            @RequestParam(name = "redirectFrom", required = false) String redirectFrom,
+            Model model,
+            HttpServletRequest request
+    ) {
+        // 1) 없는 게시판 유형이거나
+        // 2) 로그인 상태가 아니거나
+        // 3) 수정할 postNum이 전달되지 않은 경우
+        if (
+            !BoardUtility.isValidBoardType(boardType) ||
+            !MemberUtility.isLoggedIn() ||
+            !PostUtility.isPostWritableMember(boardType, JdbcOracleSpringApplication.currMemberNum) ||
+            postNum == null
+        ) return "redirect:/board/general";
+        model.addAttribute("boardName", BoardUtility.getBoardName(boardType));
+
+        if (redirectFrom == null) {
+            referer = request.getHeader("Referer");
+        } else {
+            referer = redirectFrom;
+        }
+        model.addAttribute("referer", referer);
+        model.addAttribute("prevPageUrl", referer);
+
+        PostVo post = postDao.selectPostByPostNum(postNum);
+        model.addAttribute("postTitleBefore", post.getPostTitle());
+        model.addAttribute("postContentBefore", post.getPostContent());
+
+        addAttributeToHeader(model, boardType);
+        return "thymeleaf/modify-post";
+    }
+
+    @PostMapping("{boardType}/post/{postNum}/modify/submit")
+    public String modifyPostSubmit(
+            @PathVariable("boardType") String boardType,
+            @PathVariable("postNum") Integer postNum,
+            @RequestParam("postTitle") String postTitle,
+            @RequestParam("postContent") String postContent
+    ) {
+        // 1) 없는 게시판 유형이거나
+        // 2) 로그인 상태가 아니거나
+        // 3) 수정할 postNum이 전달되지 않은 경우
+        if (
+            !BoardUtility.isValidBoardType(boardType) ||
+            !MemberUtility.isLoggedIn() ||
+            !PostUtility.isPostWritableMember(boardType, JdbcOracleSpringApplication.currMemberNum) ||
+            postNum == null ||
+            postTitle == null || postTitle.isEmpty() ||
+            postContent == null || postContent.isEmpty()
+        ) return "redirect:/board/general";
+
+        postDao.modifyByPostNum(postTitle, postContent, postNum);
+        return "redirect:/board/" + boardType + "/post/" + postNum;
     }
 
     @GetMapping("search")
@@ -273,7 +345,7 @@ public class BoardController {
         model.addAttribute("logoText", "KH TOON 커뮤니티");
         model.addAttribute("toggleServiceName", "웹툰 조회 서비스로 이동");
         model.addAttribute("toggleServicePagePath", Path.WEBTOON_PAGE);
-
+        model.addAttribute("serviceName", "/board");
         model.addAttribute("serviceMainPagePath", boardType.equals("notice") ? Path.NOTICE_BOARD_PAGE : Path.GENERAL_BOARD_PAGE);
         model.addAttribute("currMemberNickname", MemberUtility.isLoggedIn() ? memberDao.selectNameByMemberNum(JdbcOracleSpringApplication.currMemberNum) : null);
     }

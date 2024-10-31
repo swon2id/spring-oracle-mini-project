@@ -14,6 +14,14 @@ public class PostDao {
 
     public PostDao(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
+    public PostVo selectPostByPostNum(int postNum) {
+        String sql = "SELECT POST_TITLE, POST_CONTENT FROM POST WHERE POST_NUM = " + postNum;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new PostVo(
+                rs.getString("POST_TITLE"),
+                rs.getString("POST_CONTENT")
+        )).get(0);
+    }
+
     public List<PostVo> selectWithMemberNameByBoardNum(int boardNum) {
         String sql = "SELECT p.POST_NUM, p.POST_TITLE, p.POST_CONTENT, p.POST_PUBLISHED_DATE, MEMBER_NUM, p.POST_VISIT, p.BOARD_NUM, m.MEMBER_NICKNAME"
         + " FROM POST p"
@@ -22,7 +30,7 @@ public class PostDao {
         + " WHERE p.BOARD_NUM = " + boardNum
         + " ORDER BY p.POST_PUBLISHED_DATE DESC, p.POST_NUM";
 
-        return jdbcTemplate.query(sql, (rs, rownum) -> new PostVo(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new PostVo(
             rs.getInt("POST_NUM"),
             rs.getString("POST_TITLE"),
             rs.getString("POST_CONTENT"),
@@ -54,9 +62,24 @@ public class PostDao {
         return jdbcTemplate.query(sql, new PostRowMapper());
     }
 
+    public List<Integer> selectPostNumByMemberNum(int memberNum) {
+        String sql = "SELECT POST_NUM FROM POST WHERE MEMBER_NUM = " + memberNum;
+        return jdbcTemplate.queryForList(sql, Integer.class);
+    }
+
     public void insert(PostVo vo) {
         String sql = "INSERT INTO POST VALUES(SEQ_POST_SEQUENCE.nextval, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, vo.getPostTitle(), vo.getPostContent(), vo.getPostPublishedDate(), vo.getPostVisit(), vo.getMemberNum(), vo.getBoardNum());
+    }
+
+    public void modifyByPostNum(String postTitle, String postContent, int postNum) {
+        String sql = "UPDATE POST SET POST_TITLE = ?, POST_CONTENT = ? WHERE POST_NUM = ?";
+        jdbcTemplate.update(sql, postTitle, postContent, postNum);
+    }
+
+    public void deleteByMemberNum(int memberNum) {
+        String sql = "DELETE FROM POST WHERE MEMBER_NUM = ?";
+        jdbcTemplate.update(sql, memberNum);
     }
 
     public void deleteByPostNumAndMemberNum(int postNum, int memberNum) {

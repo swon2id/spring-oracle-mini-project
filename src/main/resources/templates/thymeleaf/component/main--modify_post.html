@@ -1,0 +1,18 @@
+<main th:fragment="postModify">
+    <span th:text="${boardName} + ' > 게시글 수정'"></span>
+    <a th:href="${prevPageUrl}">
+        <button>뒤로</button>
+    </a>
+    <form class="post-container" action="modify/submit" method="POST">
+        <div>
+            <label>제목</label>
+            <input placeholder="제목을 입력해 주세요." type="text" th:value="${postTitleBefore}" name="postTitle" minlength="1" maxlength="100" required />
+        </div>
+        <div>
+            <label>내용</label>
+            <textarea th:text="${postContentBefore}" name="postContent" placeholder="내용을 입력해 주세요." minlength="1" maxlength="1000" required></textarea>
+        </div>
+        <button type="submit">수정</button>
+        <input type="hidden" name="referer" th:value="${referer}" />
+    </form>
+</main>

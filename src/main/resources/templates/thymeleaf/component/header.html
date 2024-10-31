@@ -4,10 +4,10 @@
         <span class="logo__text" th:text="${logoText}"></span>
     </a>
     <div class="search-box">
-        <form onsubmit="return false">
-            <input type="text" name="term" placeholder="검색어를 입력하세요.">
-            <button>
-                <img src="/assets/img/search.png"/>
+        <form th:action="${serviceName != null} ? ${serviceName + '/search'} : '/search'" method="get">
+            <input type="text" name="term" minlength="1" placeholder="검색어를 입력하세요." required>
+            <button type="submit">
+                <img src="/assets/img/search.png" alt="검색"/>
             </button>
         </form>
     </div>

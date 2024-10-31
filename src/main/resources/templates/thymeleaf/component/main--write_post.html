@@ -13,5 +13,6 @@
             <textarea name="postContent" placeholder="내용을 입력해 주세요." minlength="1" maxlength="1000" required></textarea>
         </div>
         <button type="submit">등록</button>
+        <input type="hidden" name="referer" th:value="${referer}" />
     </form>
 </main>

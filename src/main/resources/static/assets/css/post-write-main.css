@@ -67,7 +67,7 @@ textarea {
   top: -62px;
 }
 
-main > button {
+main > a > button {
   position: absolute;
   top: 110px;
   right: 150px;

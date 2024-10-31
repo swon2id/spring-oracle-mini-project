@@ -32,7 +32,7 @@ public class FavoriteGenreDao {
         jdbcTemplate.update(sql, vo.getMemberNum(), vo.getGenreNum());
     }
 
-    public void deleteAllByMemberNum(int memberNum) {
+    public void deleteByMemberNum(int memberNum) {
         String sql = "DELETE FROM FAVORITE_GENRE WHERE MEMBER_NUM = ?";
         jdbcTemplate.update(sql, memberNum);
     }

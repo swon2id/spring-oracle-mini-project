@@ -3,9 +3,7 @@ package com.kh.jdbc_oracle_spring.controller;
 import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
 import com.kh.jdbc_oracle_spring.common.FavoriteGenreUtility;
 import com.kh.jdbc_oracle_spring.common.MemberUtility;
-import com.kh.jdbc_oracle_spring.dao.FavoriteGenreDao;
-import com.kh.jdbc_oracle_spring.dao.GenreDao;
-import com.kh.jdbc_oracle_spring.dao.MemberDao;
+import com.kh.jdbc_oracle_spring.dao.*;
 import com.kh.jdbc_oracle_spring.vo.FavoriteGenreVo;
 import com.kh.jdbc_oracle_spring.vo.MemberVo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +22,17 @@ public class MemberController {
     private final MemberDao memberDao;
     private final GenreDao genreDao;
     private final FavoriteGenreDao favoriteGenreDao;
+    private final ReplyEvaluationDao replyEvaluationDao;
+    private final ReplyDao replyDao;
+    private final PostDao postDao;
 
-    public MemberController(MemberDao memberDao, GenreDao genreDao, FavoriteGenreDao favoriteGenreDao) {
+    public MemberController(MemberDao memberDao, GenreDao genreDao, FavoriteGenreDao favoriteGenreDao, ReplyDao replyDao, ReplyEvaluationDao replyEvaluationDao, PostDao postDao) {
         this.memberDao = memberDao;
         this.genreDao = genreDao;
         this.favoriteGenreDao = favoriteGenreDao;
+        this.replyDao = replyDao;
+        this.replyEvaluationDao = replyEvaluationDao;
+        this.postDao = postDao;
     }
 
     @GetMapping("register")
@@ -127,7 +131,7 @@ public class MemberController {
 
         int memberNum = JdbcOracleSpringApplication.currMemberNum;
         if (selectedGenres == null || selectedGenres.isEmpty()) {
-            favoriteGenreDao.deleteAllByMemberNum(memberNum);
+            favoriteGenreDao.deleteByMemberNum(memberNum);
             return pageUrlToRedirect;
         }
         else if (selectedGenres.size() > 3) return pageUrlToRedirect;
@@ -143,5 +147,38 @@ public class MemberController {
             favoriteGenreDao.insert(new FavoriteGenreVo(memberNum, genreNumToInsert));
         }
         return pageUrlToRedirect;
+    }
+
+    @PostMapping("mypage/delete")
+    public String deleteMember() {
+        if (!MemberUtility.isLoggedIn()) return "redirect:/";
+        favoriteGenreDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+
+        List<Integer> posts = postDao.selectPostNumByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+        for (int postNum: posts) {
+            // 현재 유저의 게시글에 달린 모든 댓글의 댓글 평가 삭제 후 해당 댓글 삭제
+            List<Integer> replys = replyDao.selectReplyNumByPostNum(postNum);
+            for (int replyNum: replys) {
+                replyEvaluationDao.deleteByReplyNum(replyNum);
+                replyDao.deleteByReplyNum(replyNum);
+            }
+        }
+        // 현재 유저가 작성한 게시글 삭제
+        postDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+
+        // 현재 유저가 작성한 댓글의 댓글 평가와 댓글 삭제
+        List<Integer> replys = replyDao.selectReplyNumByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+        for (int replyNum: replys) {
+            replyEvaluationDao.deleteByReplyNum(replyNum);
+            replyDao.deleteByReplyNum(replyNum);
+        }
+
+        // 현재 유저가 남긴 모든 댓글 평가 삭제
+        replyEvaluationDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+
+        // 회원 삭제
+        memberDao.delete(JdbcOracleSpringApplication.currMemberNum);
+        MemberUtility.logout();
+        return "redirect:/";
     }
 }

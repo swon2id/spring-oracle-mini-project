@@ -35,6 +35,17 @@ public class MemberDao {
 
     public boolean insert(MemberVo vo) {
         String sql = "INSERT INTO MEMBER VALUES(SEQ_MEMBER_SEQUENCE.nextval, ?, ?, ?, ?, ?, ?, ? ,?)";
-        return 1 == jdbcTemplate.update(sql, vo.getMemberId(), vo.getMemberPw(), vo.getMemberEmail(), vo.getMemberBirth(), vo.getMemberNickname(), vo.getMemberRegistrationDate(), vo.getMemberExist(), vo.getMemberTypeNum());
+        int res = 0;
+        try {
+            res = jdbcTemplate.update(sql, vo.getMemberId(), vo.getMemberPw(), vo.getMemberEmail(), vo.getMemberBirth(), vo.getMemberNickname(), vo.getMemberRegistrationDate(), vo.getMemberExist(), vo.getMemberTypeNum());
+        } catch(Exception e) {
+            System.out.println("멤버 등록 실패 : " + e.getMessage());
+        }
+        return res == 1;
+    }
+
+    public void delete(int memberNum) {
+        String sql = "DELETE FROM MEMBER WHERE MEMBER_NUM = ?";
+        jdbcTemplate.update(sql, memberNum);
     }
 }

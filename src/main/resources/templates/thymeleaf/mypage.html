@@ -16,16 +16,26 @@
         </button>
     </a>
     <h1>KH TOON 마이페이지</h1>
-    <span>선호장르 설정</span>
-    <form action="/member/mypage/submit" method="POST">
-        <label th:each="genre : ${genres}">
-            <span th:text="${genre.genreName}"></span>
-            <input type="checkbox" name="selectedGenres" th:value="${genre.genreName}"
-                   th:checked="${#lists.contains(favoriteGenreNumList, genre.genreNum)}"
-                   onchange="this.form.submit()">
-        </label>
-        <input type="hidden" name="referer" th:value="${referer}" />
-    </form>
+    <div class="favorite-genre-setting">
+        <span>선호장르 설정</span>
+        <form action="/member/mypage/submit" method="POST">
+            <label th:each="genre : ${genres}">
+                <span th:text="${genre.genreName}"></span>
+                <input type="checkbox" name="selectedGenres" th:value="${genre.genreName}"
+                       th:checked="${#lists.contains(favoriteGenreNumList, genre.genreNum)}"
+                       onchange="this.form.submit()">
+            </label>
+            <input type="hidden" name="referer" th:value="${referer}" />
+        </form>
+    </div>
+    <div>
+<!--        <form action="/member/mypage/edit">-->
+<!--            <button type="sumbit">회원정보 수정</button>-->
+<!--        </form>-->
+        <form action="/member/mypage/delete" method="POST">
+            <button type="sumbit">탈퇴</button>
+        </form>
+    </div>
 </div>
 </body>
 

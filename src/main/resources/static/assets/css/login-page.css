@@ -102,17 +102,3 @@ form button:hover {
 form button:active {
     scale: 0.99;
 }
-
-body > div:last-child button {
-    margin-top: 20px;
-    width: 100px;
-    height: 32px;
-
-    background-color: #484848;
-    border-radius: 5px;
-    border: none;
-    box-shadow: 0 0 3px #484848;
-    color: white;
-
-    cursor: pointer;
-}

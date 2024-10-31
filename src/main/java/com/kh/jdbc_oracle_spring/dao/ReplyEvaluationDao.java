@@ -29,4 +29,9 @@ public class ReplyEvaluationDao {
         String sql = "DELETE FROM REPLY_EVALUATION WHERE REPLY_NUM = ?";
         System.out.println(jdbcTemplate.update(sql, replyNum));
     }
+
+    public void deleteByMemberNum(int memberNum) {
+        String sql = "DELETE FROM REPLY_EVALUATION WHERE MEMBER_NUM = ?";
+        System.out.println(jdbcTemplate.update(sql, memberNum));
+    }
 }
