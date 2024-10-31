@@ -1,7 +1,5 @@
 <header th:fragment="header">
-    <a class="logo"
-       th:data-url="${serviceMainPagePath}"
-       onclick="location.href=this.getAttribute('data-url'); return false;">
+    <a class="logo" th:href="${serviceMainPagePath}">
         <img class="logo__image" src="/assets/img/logo.png" alt="로고">
         <span class="logo__text" th:text="${logoText}"></span>
     </a>
@@ -14,15 +12,27 @@
         </form>
     </div>
     <div>
-        <button id="register-button" th:if="${currMemberNickname == null}" onclick="location.href='/member/register';">회원가입</button>
-        <button id="login-button" th:if="${currMemberNickname == null}" onclick="location.href='/member/login';">로그인</button>
-        <span th:if="${currMemberNickname != null}" th:text="'환영합니다 ' + ${currMemberNickname} + '님'"></span>
-        <button id="member-page-button" th:if="${currMemberNickname != null}" onclick="location.href='/member/mypage';">마이페이지</button>
-        <button id="goto-board-button"
-                th:data-url="${toggleServicePagePath}"
-                th:text="${toggleServiceName}"
-                onclick="location.href=this.getAttribute('data-url');">
-        </button>
-        <button th:if="${currMemberNickname != null}" onclick="location.href='/member/logout';">로그아웃</button>
+        <div>
+            <form th:if="${currMemberNickname == null}" action="/member/register">
+                <button type="submit" id="register-button">회원가입</button>
+            </form>
+
+            <form th:if="${currMemberNickname == null}" action="/member/login">
+                <button type="submit" id="login-button">로그인</button>
+            </form>
+
+            <span th:if="${currMemberNickname != null}" th:text="'환영합니다 ' + ${currMemberNickname} + '님'"></span>
+
+            <form th:if="${currMemberNickname != null}" action="/member/mypage">
+                <button type="submit" id="mypage-button">마이페이지</button>
+            </form>
+
+            <form th:if="${currMemberNickname != null}" action="/member/logout" method="POST">
+                <button type="submit" id="logout-button">로그아웃</button>
+            </form>
+        </div>
+        <a th:href="${toggleServicePagePath}">
+            <button id="goto-board-button" th:text="${toggleServiceName}"></button>
+        </a>
     </div>
 </header>

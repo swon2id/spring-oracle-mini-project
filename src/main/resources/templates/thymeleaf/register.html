@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,11 @@
 
 <body>
 <div>
-    <button onclick="history.back()"><img src="/assets/img/left-arrow.png" /></button>
+    <a th:href="${prevPageUrl}">
+        <button>
+            <img src="/assets/img/left-arrow.png" />
+        </button>
+    </a>
     <h1>KH TOON 회원가입</h1>
     <form action="/member/register/submit" method="POST">
         <label>아이디</label>
@@ -24,6 +28,7 @@
         <label>생년월일</label>
         <input type="date" name="birth" required/>
         <button type="submit">등록</button>
+        <input type="hidden" name="referer" th:value="${referer}" />
     </form>
 </div>
 </body>

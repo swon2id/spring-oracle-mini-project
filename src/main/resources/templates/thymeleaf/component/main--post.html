@@ -2,7 +2,10 @@
   <span th:text="${boardName}"></span>
   <button style="display: none;">수정</button>
   <button style="display: none;">삭제</button>
-  <button onclick="history.back()">뒤로</button>
+  <a th:href="${prevPageUrl}">
+    <button>뒤로</button>
+  </a>
+
   <div>
     <div class="post-info">
       <span th:text="'제목 : ' + ${postTitle}"></span>
@@ -19,7 +22,6 @@
       <span>댓글 작성</span>
       <form th:action="${postNum} + '/reply-submit'" method="POST">
         <textarea name="replyContent" cols="5" placeholder="내용을 입력해 주세요." minlength="1" maxlength="500" required></textarea>
-        <input type="hidden" name="memberNum" th:value="${memberNum}"/>
         <button type="submit">등록</button>
       </form>
     </div>

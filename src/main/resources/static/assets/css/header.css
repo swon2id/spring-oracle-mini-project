@@ -5,8 +5,7 @@ header {
   align-items: center;
   height: 100px;
   box-sizing: border-box;
-  border-bottom: 1px solid #FF9200;
-  background-color: #272727;
+  border-bottom: 2px solid #FF9200;
 }
 
 .logo {
@@ -15,10 +14,12 @@ header {
   height: 40px;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
 }
 
 .logo__text {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 
@@ -48,19 +49,41 @@ header {
   padding:12px 12px;
   padding-right: 60px;
   border-radius: 20px;
-  border-bottom-colorr: none;
+  border: none;
+}
+
+.search-box input:focus {
+    outline: 2px solid #FF9200;
 }
 
 header > div:last-child {
   width: 25%;
   display: flex;
   justify-content: flex-end;
+
+}
+
+header > div:last-child > a {
+  margin-left: 20px;
+  display: flex;
+  text-decoration: none;
+}
+
+header > div:last-child > div {
+  display: flex;
+  gap: 10px;
+  position: relative;
+}
+
+header > div:last-child > div span {
+  font-size: 13px;
+  position: absolute;
+  bottom: 25px;
 }
 
 .search-box button {
   position: absolute;
   right: 10px;
-  background-color: #0000002e;
   border: none;
   width: 35px;
   height: 35px;
@@ -68,6 +91,14 @@ header > div:last-child {
 
   border: 1px solid black;
   border-radius: 50%;
+}
+
+.search-box button:hover {
+    scale: 1.05;
+}
+
+.search-box button:active {
+    scale: 0.99;
 }
 
 .search-box img {

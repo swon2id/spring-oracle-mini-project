@@ -41,9 +41,9 @@ public class ReplyDao {
         jdbcTemplate.update(sql, vo.getReplyContent(), vo.getReplyPublishedDate(), vo.getReplyLikeCount(), vo.getReplyDislikeCount(), vo.getMemberNum(), vo.getPostNum());
     }
 
-    public void deleteByReplyNum(int replyNum) {
-        String sql = "DELETE FROM REPLY WHERE REPLY_NUM = " + replyNum;
-        jdbcTemplate.update(sql);
+    public void deleteByReplyNumAndMemberNum(int replyNum, int memberNum) {
+        String sql = "DELETE FROM REPLY WHERE REPLY_NUM = ? AND MEMBER_NUM = ?";
+        jdbcTemplate.update(sql, replyNum, memberNum);
     }
 
     public void increaseLikeCountByReplyNum(int replyNum) {

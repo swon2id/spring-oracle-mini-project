@@ -85,7 +85,7 @@
           <span>추천 네이버 웹툰 TOP 10</span>
           <ol>
             <li th:each="list : ${naverRecommendList}">
-              <a th:href="'http://' + ${list.webtoonPageUrl}"
+              <a th:href="${list.webtoonPageUrl}"
                  target="_blank"
                  rel="noopener noreferrer">
                 <span th:text="${list.webtoonTitle}"></span>
@@ -98,7 +98,7 @@
           <span>추천 카카오 웹툰 TOP 10</span>
           <ol>
             <li th:each="list : ${kakaoRecommendList}">
-              <a th:href="'http://' + ${list.webtoonPageUrl}"
+              <a th:href="${list.webtoonPageUrl}"
                  target="_blank"
                  rel="noopener noreferrer">
                 <span th:text="${list.webtoonTitle}"></span>

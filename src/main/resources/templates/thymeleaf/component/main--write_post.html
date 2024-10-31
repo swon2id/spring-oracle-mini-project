@@ -1,6 +1,8 @@
 <main th:fragment="postWrite">
     <span th:text="${boardName} + ' > 게시글 작성'"></span>
-    <button onclick="history.back()">뒤로</button>
+    <a th:href="${prevPageUrl}">
+        <button>뒤로</button>
+    </a>
     <form class="post-container" action="write-post/submit" method="POST">
         <div>
             <label>제목</label>

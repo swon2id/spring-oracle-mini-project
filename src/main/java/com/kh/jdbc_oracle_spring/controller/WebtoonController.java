@@ -1,13 +1,13 @@
 package com.kh.jdbc_oracle_spring.controller;
 
 import com.kh.jdbc_oracle_spring.JdbcOracleSpringApplication;
+import com.kh.jdbc_oracle_spring.common.MemberUtility;
 import com.kh.jdbc_oracle_spring.common.Path;
 import com.kh.jdbc_oracle_spring.common.TimeUtility;
 import com.kh.jdbc_oracle_spring.common.WebtoonUtility;
 import com.kh.jdbc_oracle_spring.dao.GenreDao;
 import com.kh.jdbc_oracle_spring.dao.MemberDao;
 import com.kh.jdbc_oracle_spring.dao.WebtoonDao;
-import com.kh.jdbc_oracle_spring.vo.GenreVo;
 import com.kh.jdbc_oracle_spring.vo.WebtoonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,19 +20,19 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
+public class WebtoonController {
     private final WebtoonDao webtoonDao;
     private final GenreDao genreDao;
     private final MemberDao memberDao;
 
-    public MainController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
+    public WebtoonController(WebtoonDao webtoonDao, GenreDao genreDao, MemberDao memberDao) {
         this.webtoonDao = webtoonDao;
         this.genreDao = genreDao;
         this.memberDao = memberDao;
     }
 
     @GetMapping("")
-    public String mainPageInit(
+    public String initWebtoonMainPage(
             @RequestParam(name = "tab", required = false) String tab,
             @RequestParam(name = "genre", required = false) List<String> selectedGenres,
             Model model
@@ -94,9 +94,9 @@ public class MainController {
 
     private void addAttributeToHeader(Model model) {
         model.addAttribute("logoText", "KH TOON");
-        model.addAttribute("toggleServiceName", "게시판");
+        model.addAttribute("toggleServiceName", "커뮤니티 서비스로 이동");
         model.addAttribute("toggleServicePagePath", Path.GENERAL_BOARD_PAGE);
         model.addAttribute("serviceMainPagePath", Path.WEBTOON_PAGE);
-        model.addAttribute("currMemberNickname", JdbcOracleSpringApplication.currMemberNum != null ? memberDao.selectNameByMemberNum(JdbcOracleSpringApplication.currMemberNum) : null);
+        model.addAttribute("currMemberNickname", MemberUtility.isLoggedIn() ? memberDao.selectNameByMemberNum(JdbcOracleSpringApplication.currMemberNum) : null);
     }
 }

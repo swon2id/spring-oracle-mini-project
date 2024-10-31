@@ -8,6 +8,7 @@ import com.kh.jdbc_oracle_spring.dao.GenreDao;
 import com.kh.jdbc_oracle_spring.dao.MemberDao;
 import com.kh.jdbc_oracle_spring.vo.FavoriteGenreVo;
 import com.kh.jdbc_oracle_spring.vo.MemberVo;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,50 +31,98 @@ public class MemberController {
         this.favoriteGenreDao = favoriteGenreDao;
     }
 
-    @GetMapping("login")
-    public String enterLoginPage() {
-        return "thymeleaf/login";
-    }
-
-    @PostMapping("login/authentication")
-    public String login(@RequestParam("id") String id, @RequestParam("pw") String pw) {
-        // 로그인 성공
-        if (MemberUtility.login(id, pw, memberDao.selectById(id))) return "redirect:/";
-
-        // 로그인 실패
-        return "thymeleaf/login";
-    }
-
-    @GetMapping("logout")
-    public String logout() {
-        MemberUtility.logout();
-        return "redirect:/";
-    }
-
     @GetMapping("register")
-    public String register() {
+    public String register(
+        @RequestParam(name = "referer", required = false) String referer,
+        @RequestParam(name = "redirectFrom", required = false) String redirectFrom,
+        Model model,
+        HttpServletRequest request
+    ) {
+        if (redirectFrom == null) {
+            referer = request.getHeader("Referer");
+        } else {
+            referer = redirectFrom;
+        }
+        model.addAttribute("referer", referer);
+        model.addAttribute("prevPageUrl", referer);
         return "thymeleaf/register";
     }
 
-    @PostMapping("register/submit")
-    public String submitMemberRegistration(@RequestParam("id") String id, @RequestParam("pw") String pw, @RequestParam("email") String email, @RequestParam("nickname") String nickname, @RequestParam("birth") Date birthDate) {
-        // 회원 가입 실패
-        if (memberDao.insert(new MemberVo(id, pw, email, birthDate, nickname))) return "redirect:/";
-
-        // 회원 가입 성공
-        return "thymeleaf/register";
+    @GetMapping("login")
+    public String enterLoginPage(
+        @RequestParam(name = "referer", required = false) String referer,
+        @RequestParam(name = "redirectFrom", required = false) String redirectFrom,
+        Model model,
+        HttpServletRequest request
+    ) {
+        if (redirectFrom == null) {
+            referer = request.getHeader("Referer");
+        } else {
+            referer = redirectFrom;
+        }
+        model.addAttribute("referer", referer);
+        model.addAttribute("prevPageUrl", referer);
+        return "thymeleaf/login";
     }
 
     @GetMapping("mypage")
-    public String enterMyPage(Model model) {
+    public String enterMyPage(
+        @RequestParam(name = "referer", required = false) String referer,
+        @RequestParam(name = "redirectFrom", required = false) String redirectFrom,
+        Model model,
+        HttpServletRequest request
+    ) {
+        if (redirectFrom == null) {
+            referer = request.getHeader("Referer");
+        } else {
+            referer = redirectFrom;
+        }
+        model.addAttribute("referer", referer);
+        model.addAttribute("prevPageUrl", referer);
+
+        if (!MemberUtility.isLoggedIn()) return "redirect:/";
         model.addAttribute("genres", genreDao.select());
         model.addAttribute("favoriteGenreNumList", favoriteGenreDao.selectGenreNumByMemberNum(JdbcOracleSpringApplication.currMemberNum));
         return "thymeleaf/mypage";
     }
 
+    @PostMapping("register/submit")
+    public String submitMemberRegistration(
+        @RequestParam("id") String id,
+        @RequestParam("pw") String pw,
+        @RequestParam("email") String email,
+        @RequestParam("nickname") String nickname,
+        @RequestParam("birth") Date birthDate,
+        @RequestParam(name = "referer", required = true) String referer
+    ) {
+        if (memberDao.insert(new MemberVo(id, pw, email, birthDate, nickname))) return "redirect:/";
+        return "redirect:/member/register?redirectFrom=" + referer;
+    }
+
+    @PostMapping("login/authentication")
+    public String login(
+        @RequestParam("id") String id,
+        @RequestParam("pw") String pw,
+        @RequestParam(name = "referer", required = true) String referer
+    ) {
+        if (MemberUtility.login(id, pw, memberDao.selectById(id))) return "redirect:/";
+        return "redirect:/member/login?redirectFrom=" + referer;
+    }
+
+    @PostMapping("logout")
+    public String logout() {
+        MemberUtility.logout();
+        return "redirect:/";
+    }
+
     @PostMapping("mypage/submit")
-    public String submitFavoriteGenre(@RequestParam(name = "selectedGenres", required = false) List<String> selectedGenres) {
-        String pageUrlToRedirect = "redirect:/member/mypage";
+    public String submitFavoriteGenre(
+        @RequestParam(name = "selectedGenres", required = false) List<String> selectedGenres,
+        @RequestParam(name = "referer", required = true) String referer
+    ) {
+        if (!MemberUtility.isLoggedIn()) return "redirect:/";
+        String pageUrlToRedirect = "redirect:/member/mypage?redirectFrom=" + referer;
+
         int memberNum = JdbcOracleSpringApplication.currMemberNum;
         if (selectedGenres == null || selectedGenres.isEmpty()) {
             favoriteGenreDao.deleteAllByMemberNum(memberNum);
@@ -91,7 +140,6 @@ public class MemberController {
             if (genreNumToInsert == -1) return pageUrlToRedirect;
             favoriteGenreDao.insert(new FavoriteGenreVo(memberNum, genreNumToInsert));
         }
-
         return pageUrlToRedirect;
     }
 }

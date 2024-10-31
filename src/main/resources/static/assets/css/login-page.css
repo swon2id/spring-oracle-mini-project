@@ -30,7 +30,7 @@ body > div:first-child {
     box-shadow: 0 0 10px #484848;
 }
 
-body > div:first-child > button {
+body > div:first-child > a > button {
     position: absolute;
     top: 20px;
     right: 10px;
@@ -44,7 +44,7 @@ body > div:first-child > button {
     align-item: center;
 }
 
-body > div:first-child > button img {
+body > div:first-child > a > button img {
     width: 100%;
     transform: translateY(-5px);
     filter: invert(100%);
@@ -71,6 +71,10 @@ form input {
     padding: 8px 12px;
     border-radius: 12px;
     border: none;
+}
+
+input:focus {
+  outline: 2px solid #FF9200;
 }
 
 form label {

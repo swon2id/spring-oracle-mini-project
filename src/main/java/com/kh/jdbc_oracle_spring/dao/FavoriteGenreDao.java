@@ -19,7 +19,7 @@ public class FavoriteGenreDao {
     }
 
     public List<FavoriteGenreVo> selectWithGenreNameByMemberNum(int memberNum) {
-        String sql = "SELECT fg.MEMBER_NUM, g.GENRE_NAME FROM FAVORITE_GENRE fg JOIN GENRE g USING(GENRE_NUM) WHERE fg.MEMBER_NUM = " + memberNum;
+        String sql = "SELECT fg.MEMBER_NUM, GENRE_NUM, g.GENRE_NAME FROM FAVORITE_GENRE fg JOIN GENRE g USING(GENRE_NUM) WHERE fg.MEMBER_NUM = " + memberNum;
         return jdbcTemplate.query(sql, (rs, rowNum) -> new FavoriteGenreVo(
                 rs.getInt("MEMBER_NUM"),
                 rs.getInt("GENRE_NUM"),

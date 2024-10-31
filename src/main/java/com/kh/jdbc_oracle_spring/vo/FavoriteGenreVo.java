@@ -17,8 +17,7 @@ public class FavoriteGenreVo {
 
     // GENRE 테이블 조인 맵핑 용도
     public FavoriteGenreVo(int memberNum, int genreNum, String genreName) {
-        this.memberNum = memberNum;
-        this.genreNum = genreNum;
+        this(memberNum, genreNum);
         this.genreName = genreName;
     }
 
