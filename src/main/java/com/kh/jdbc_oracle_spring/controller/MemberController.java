@@ -176,6 +176,9 @@ public class MemberController {
         // 현재 유저가 남긴 모든 댓글 평가 삭제
         replyEvaluationDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
 
+        // 현재 유저의 선호장르 기록 삭제
+        favoriteGenreDao.deleteByMemberNum(JdbcOracleSpringApplication.currMemberNum);
+
         // 회원 삭제
         memberDao.delete(JdbcOracleSpringApplication.currMemberNum);
         MemberUtility.logout();
