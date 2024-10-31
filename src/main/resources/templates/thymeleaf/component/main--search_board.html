@@ -5,10 +5,10 @@
   <section>
     <div class="search-result-item">
       <ol>
-        <li th:each="post : ${posts}">
+        <li th:each="post, stat : ${posts}">
           <div class="result-header">
             <span class="result-header--info" th:text="${post.boardNum == 1 ? '[ 공지 ]' : '[ 자유 ]'}"></span>
-            <a href="" th:text="${post.postTitle}"></a>
+            <a th:href="${postUrls[stat.index]}" th:text="${post.postTitle}"></a>
             <span class="result-header--info" th:text="${post.memberNickname} + ' | ' + ${post.postPublishedDate}"></span>
           </div>
           <div class="result-snippet">
